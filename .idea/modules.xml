@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/tfg.iml" filepath="$PROJECT_DIR$/tfg.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TFGapi.iml" filepath="$PROJECT_DIR$/TFGapi.iml" />
     </modules>
   </component>
 </project>
