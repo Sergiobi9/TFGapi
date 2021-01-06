@@ -1,0 +1,17 @@
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Artist/ArtistRepository.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Authentication/AuthenticationData.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/TfGapiApplication.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Helpers/ResponseInfo.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Gig/GigHistorial.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/User/UserMusicStylePreferences.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Artist/Artist.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Security/WebSecurityConfiguration.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Gig/GigController.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Booking/Booking.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/User/UserRepository.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Authentication/AuthenticationController.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Helpers/Helpers.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Artist/ArtistsController.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Gig/Gig.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/User/User.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/User/UserArtistsPreferences.java
