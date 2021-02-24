@@ -1,9 +1,11 @@
 package com.example.tfg.Controllers.Authentication;
 
 import com.example.tfg.Entities.Authentication.AuthenticationData;
+import com.example.tfg.Entities.User.User;
 import com.example.tfg.Helpers.Helpers;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.User.UserRepository;
+import com.example.tfg.Security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,12 @@ public class AuthenticationController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationData authenticationData) {
         Map<Object, Object> model = new HashMap<>();
@@ -29,10 +37,14 @@ public class AuthenticationController {
         String userEmail = authenticationData.getEmail();
         String password = authenticationData.getPassword();
 
-        // User userRetrieved = userRepository.findUserByEmail(userEmail);
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userEmail, password));
+        User user = userRepository.findUserByEmail(userEmail);
 
-        if (Helpers.isNotNull(userEmail)){
+        if (Helpers.isNotNull(user)){
+            String token = jwtTokenProvider.createToken(userEmail, user.getRoles());
             model.put(ResponseInfo.INFO, ResponseInfo.LOGIN_INTENT_SUCESS);
+            model.put("user", user);
+            model.put("token", token);
         } else {
             model.put(ResponseInfo.INFO, ResponseInfo.LOGIN_INTENT_FAILED);
         }

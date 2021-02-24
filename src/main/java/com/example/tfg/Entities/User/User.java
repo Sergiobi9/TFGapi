@@ -1,10 +1,13 @@
 package com.example.tfg.Entities.User;
 
+import com.example.tfg.Entities.Role.Role;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Set;
 
+@Document(collection = "USER")
 public class User {
 
     @Id
@@ -16,8 +19,9 @@ public class User {
     public String email;
     public String password;
     public String profileUrl;
-    public String bio;
-    public String musicalStyle;
+    @DBRef
+    private Set<Role> roles;
+
 
     public User(){}
 
@@ -85,20 +89,11 @@ public class User {
         this.profileUrl = profileUrl;
     }
 
-    public String getBio() {
-        return bio;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
-
-    public String getMusicalStyle() {
-        return musicalStyle;
-    }
-
-    public void setMusicalStyle(String musicalStyle) {
-        this.musicalStyle = musicalStyle;
-    }
-
 }
