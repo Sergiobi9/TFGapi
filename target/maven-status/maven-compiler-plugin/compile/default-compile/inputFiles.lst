@@ -1,5 +1,6 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/TfGapiApplication.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Security/JwtConfigurer.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Role/RoleController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Helpers/ResponseInfo.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Gig/GigHistorial.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Security/JwtTokenProvider.java

@@ -5,6 +5,7 @@ com/example/tfg/Entities/Role/Role.class
 com/example/tfg/Controllers/Gig/GigController.class
 com/example/tfg/Entities/Token/ConfirmationTokenUser.class
 com/example/tfg/Entities/User/UserMusicStylePreferences.class
+com/example/tfg/Controllers/Role/RoleController.class
 com/example/tfg/Entities/User/UserArtistsPreferences.class
 com/example/tfg/Security/CustomUserDetailsService.class
 com/example/tfg/Entities/Artist/Artist.class
