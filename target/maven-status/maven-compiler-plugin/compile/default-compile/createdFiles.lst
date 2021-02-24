@@ -3,7 +3,6 @@ com/example/tfg/Security/WebSecurityConfiguration.class
 com/example/tfg/Repositories/Role/RoleRepository.class
 com/example/tfg/Entities/Role/Role.class
 com/example/tfg/Controllers/Gig/GigController.class
-com/example/tfg/Entities/Token/ConfirmationTokenUser.class
 com/example/tfg/Entities/User/UserMusicStylePreferences.class
 com/example/tfg/Controllers/Role/RoleController.class
 com/example/tfg/Entities/User/UserArtistsPreferences.class
@@ -15,7 +14,6 @@ com/example/tfg/Entities/Booking/Booking.class
 com/example/tfg/TfGapiApplication.class
 com/example/tfg/Helpers/ResponseInfo.class
 com/example/tfg/Controllers/User/UserController.class
-com/example/tfg/Entities/Token/ConfirmationTokenArtist.class
 com/example/tfg/Security/JwtTokenFilter.class
 com/example/tfg/Repositories/Artist/ArtistRepository.class
 com/example/tfg/Security/JwtTokenProvider.class
