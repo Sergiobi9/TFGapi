@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface ConcertLocationRepository extends MongoRepository<ConcertLocation, String>  {
 
+    ConcertLocation findByConcertId(String concertId);
 }

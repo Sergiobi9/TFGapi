@@ -13,6 +13,7 @@ public class Artist {
     @Id
     private String id;
     private String userId;
+    private String artistName;
     private String bio;
     private String musicalStyle;
 
@@ -33,6 +34,14 @@ public class Artist {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getArtistName() {
+        return artistName;
+    }
+
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 
     public String getBio() {

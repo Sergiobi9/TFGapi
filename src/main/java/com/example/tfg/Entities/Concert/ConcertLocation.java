@@ -8,6 +8,7 @@ public class ConcertLocation {
 
     @Id
     public String id;
+    public String concertId;
     public double latitude;
     public double longitude;
     public String street;
@@ -15,11 +16,20 @@ public class ConcertLocation {
 
     public ConcertLocation(){}
 
-    public ConcertLocation(double latitude, double longitude, String street, String placeDescription) {
+    public ConcertLocation(String concertId, double latitude, double longitude, String street, String placeDescription) {
+        this.concertId = concertId;
         this.latitude = latitude;
         this.longitude = longitude;
         this.street = street;
         this.placeDescription = placeDescription;
+    }
+
+    public String getConcertId() {
+        return concertId;
+    }
+
+    public void setConcertId(String concertId) {
+        this.concertId = concertId;
     }
 
     public String getId() {

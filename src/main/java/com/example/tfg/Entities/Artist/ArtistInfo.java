@@ -7,10 +7,20 @@ public class ArtistInfo {
     public String country;
     public int gender;
     public String profileUrl;
-    private String bio;
-    private String musicalStyle;
+    public String bio;
+    public String musicalStyle;
 
     public ArtistInfo(){}
+
+    public ArtistInfo(String userId, String name, String country, int gender, String profileUrl, String bio, String musicalStyle) {
+        this.userId = userId;
+        this.name = name;
+        this.country = country;
+        this.gender = gender;
+        this.profileUrl = profileUrl;
+        this.bio = bio;
+        this.musicalStyle = musicalStyle;
+    }
 
     public String getUserId() {
         return userId;

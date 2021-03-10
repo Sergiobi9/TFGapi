@@ -11,7 +11,6 @@ public class Concert {
     @Id
     public String id;
     public String name;
-    public String concertLocationId;
     public String dateCreated;
     public String dateStarts;
     public double price;
@@ -24,9 +23,8 @@ public class Concert {
 
     public Concert() {}
 
-    public Concert(String name, String concertLocationId, String dateCreated, String dateStarts, double price, int numberAssistants, String description, String extraDescription, boolean finished, int numberImages, ArrayList<String> artistsIds) {
+    public Concert(String name, String dateCreated, String dateStarts, double price, int numberAssistants, String description, String extraDescription, boolean finished, int numberImages, ArrayList<String> artistsIds) {
         this.name = name;
-        this.concertLocationId = concertLocationId;
         this.dateCreated = dateCreated;
         this.dateStarts = dateStarts;
         this.price = price;
@@ -52,14 +50,6 @@ public class Concert {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getConcertLocationId() {
-        return concertLocationId;
-    }
-
-    public void setConcertLocationId(String concertLocationId) {
-        this.concertLocationId = concertLocationId;
     }
 
     public double getPrice() {

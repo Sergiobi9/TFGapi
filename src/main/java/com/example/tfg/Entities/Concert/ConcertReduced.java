@@ -11,16 +11,34 @@ public class ConcertReduced {
     public double latitude;
     public double longitude;
     public String street;
-    public String price;
+    public double price;
     public String dateStarts;
     public int numberAssistants;
     public String description;
     public String placeDescription;
     public String extraDescription;
+    public String concertCoverImage;
     public ArrayList<String> imagesUrls;
     public ArrayList<ArtistInfo> artists;
 
     public ConcertReduced(){}
+
+    public ConcertReduced(String concertId, String name, double latitude, double longitude, String street, double price, String dateStarts, int numberAssistants, String description, String placeDescription, String extraDescription, String concertCoverImage, ArrayList<String> imagesUrls, ArrayList<ArtistInfo> artists) {
+        this.concertId = concertId;
+        this.name = name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.street = street;
+        this.price = price;
+        this.dateStarts = dateStarts;
+        this.numberAssistants = numberAssistants;
+        this.description = description;
+        this.placeDescription = placeDescription;
+        this.extraDescription = extraDescription;
+        this.concertCoverImage = concertCoverImage;
+        this.imagesUrls = imagesUrls;
+        this.artists = artists;
+    }
 
     public String getConcertId() {
         return concertId;
@@ -62,11 +80,11 @@ public class ConcertReduced {
         this.street = street;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -108,6 +126,14 @@ public class ConcertReduced {
 
     public void setExtraDescription(String extraDescription) {
         this.extraDescription = extraDescription;
+    }
+
+    public String getConcertCoverImage() {
+        return concertCoverImage;
+    }
+
+    public void setConcertCoverImage(String concertCoverImage) {
+        this.concertCoverImage = concertCoverImage;
     }
 
     public ArrayList<String> getImagesUrls() {
