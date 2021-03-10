@@ -68,7 +68,7 @@ public class ConcertController {
         return new ResponseEntity(concert, HttpStatus.valueOf(200));
     }
 
-    @PostMapping("/home/{userId}")
+    @GetMapping("/home/{userId}")
     public ResponseEntity getConcertsForHome(@PathVariable String userId) {
         ArrayList<ConcertReduced> concertSuggestions = new ArrayList<>();
 
