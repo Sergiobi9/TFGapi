@@ -1,16 +1,10 @@
 package com.example.tfg.Entities.Concert;
 
-import org.springframework.data.annotation.Id;
-
 import java.util.ArrayList;
 
-public class Concert {
+public class ConcertRegister {
 
-    @Id
-    public String id;
     public String name;
-    public String concertLocationId;
-    public String dateCreated;
     public String dateStarts;
     public double price;
     public int numberAssistants;
@@ -20,29 +14,7 @@ public class Concert {
     public int numberImages;
     public ArrayList<String> artistsIds;
 
-    public Concert() {}
-
-    public Concert(String name, String concertLocationId, String dateCreated, String dateStarts, double price, int numberAssistants, String description, String extraDescription, boolean finished, int numberImages, ArrayList<String> artistsIds) {
-        this.name = name;
-        this.concertLocationId = concertLocationId;
-        this.dateCreated = dateCreated;
-        this.dateStarts = dateStarts;
-        this.price = price;
-        this.numberAssistants = numberAssistants;
-        this.description = description;
-        this.extraDescription = extraDescription;
-        this.finished = finished;
-        this.numberImages = numberImages;
-        this.artistsIds = artistsIds;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    public ConcertRegister(){}
 
     public String getName() {
         return name;
@@ -52,12 +24,12 @@ public class Concert {
         this.name = name;
     }
 
-    public String getConcertLocationId() {
-        return concertLocationId;
+    public String getDateStarts() {
+        return dateStarts;
     }
 
-    public void setConcertLocationId(String concertLocationId) {
-        this.concertLocationId = concertLocationId;
+    public void setDateStarts(String dateStarts) {
+        this.dateStarts = dateStarts;
     }
 
     public double getPrice() {
@@ -66,22 +38,6 @@ public class Concert {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getDateCreated() {
-        return dateCreated;
-    }
-
-    public void setDateCreated(String dateCreated) {
-        this.dateCreated = dateCreated;
-    }
-
-    public String getDateStarts() {
-        return dateStarts;
-    }
-
-    public void setDateStarts(String dateStarts) {
-        this.dateStarts = dateStarts;
     }
 
     public int getNumberAssistants() {
@@ -131,4 +87,6 @@ public class Concert {
     public void setArtistsIds(ArrayList<String> artistsIds) {
         this.artistsIds = artistsIds;
     }
+
+
 }

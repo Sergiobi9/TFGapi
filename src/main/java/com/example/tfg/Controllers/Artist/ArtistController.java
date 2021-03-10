@@ -52,7 +52,9 @@ public class ArtistController {
         artistRepository.insert(artist);
 
         model.put(ResponseInfo.INFO, ResponseInfo.USER_BECAME_ARTIST_SUCCESS);
-        return new ResponseEntity(artist, HttpStatus.valueOf(200));
+        model.put("artist", artist);
+
+        return new ResponseEntity(model, HttpStatus.valueOf(200));
     }
 
 
