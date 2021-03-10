@@ -5,6 +5,11 @@ import java.util.ArrayList;
 public class ConcertRegister {
 
     public String name;
+    public double latitude;
+    public double longitude;
+    public String street;
+    public String placeDescription;
+    public String dateCreated;
     public String dateStarts;
     public double price;
     public int numberAssistants;
@@ -22,6 +27,46 @@ public class ConcertRegister {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getPlaceDescription() {
+        return placeDescription;
+    }
+
+    public void setPlaceDescription(String placeDescription) {
+        this.placeDescription = placeDescription;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     public String getDateStarts() {
@@ -87,6 +132,4 @@ public class ConcertRegister {
     public void setArtistsIds(ArrayList<String> artistsIds) {
         this.artistsIds = artistsIds;
     }
-
-
 }

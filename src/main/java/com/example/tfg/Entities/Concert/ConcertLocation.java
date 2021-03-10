@@ -1,7 +1,9 @@
 package com.example.tfg.Entities.Concert;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "CONCERT_LOCATION")
 public class ConcertLocation {
 
     @Id
@@ -12,6 +14,13 @@ public class ConcertLocation {
     public String placeDescription;
 
     public ConcertLocation(){}
+
+    public ConcertLocation(double latitude, double longitude, String street, String placeDescription) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.street = street;
+        this.placeDescription = placeDescription;
+    }
 
     public String getId() {
         return id;

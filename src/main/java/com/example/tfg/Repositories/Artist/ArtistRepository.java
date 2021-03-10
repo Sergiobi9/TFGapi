@@ -6,7 +6,4 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ArtistRepository extends MongoRepository<Artist, String> {
 
-    User findArtistByEmail(String email);
-    User findArtistById(String userId);
-    boolean existsArtistByEmail(String email);
 }

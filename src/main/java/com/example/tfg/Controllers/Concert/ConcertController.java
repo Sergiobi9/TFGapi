@@ -1,9 +1,10 @@
 package com.example.tfg.Controllers.Concert;
 
 import com.example.tfg.Entities.Concert.Concert;
+import com.example.tfg.Entities.Concert.ConcertHistory;
 import com.example.tfg.Entities.Concert.ConcertLocation;
 import com.example.tfg.Entities.Concert.ConcertRegister;
-import com.example.tfg.Helpers.Helpers;
+import com.example.tfg.Repositories.Concert.ConcertHistoryRepository;
 import com.example.tfg.Repositories.Concert.ConcertLocationRepository;
 import com.example.tfg.Repositories.Concert.ConcertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +23,22 @@ public class ConcertController {
     @Autowired
     private ConcertRepository concertRepository;
 
-    @PostMapping("/create")
-    public ResponseEntity createConcert(@RequestBody ConcertLocation concertLocation, @RequestBody ConcertRegister concertRegister) {
+    @Autowired
+    private ConcertHistoryRepository concertHistoryRepository;
 
-        String concertDateCreated = Helpers.getTimestamp();
+    @PostMapping("/create")
+    public ResponseEntity createConcert(@RequestBody ConcertRegister concertRegister) {
+
+        ConcertLocation concertLocation = new ConcertLocation(concertRegister.getLatitude(),
+                concertRegister.getLongitude(),
+                concertRegister.getStreet(),
+                concertRegister.getPlaceDescription());
 
         concertLocationRepository.save(concertLocation);
 
         Concert concert = new Concert(concertRegister.getName(),
                 concertLocation.getId(),
-                concertDateCreated,
+                concertRegister.getDateCreated(),
                 concertRegister.getDateStarts(),
                 concertRegister.getPrice(),
                 concertRegister.getNumberAssistants(),
@@ -42,6 +49,9 @@ public class ConcertController {
                 concertRegister.getArtistsIds());
 
         concertRepository.save(concert);
+
+        ConcertHistory concertHistory = new ConcertHistory(concert.getId());
+        concertHistoryRepository.save(concertHistory);
 
         return new ResponseEntity(concert, HttpStatus.valueOf(200));
     }

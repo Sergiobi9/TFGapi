@@ -1,10 +1,12 @@
 package com.example.tfg.Entities.Concert;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 
-public class ConcertHistorial {
+@Document(collection = "CONCERT_HISTORY")
+public class ConcertHistory {
 
     @Id
     public String id;
@@ -13,7 +15,14 @@ public class ConcertHistorial {
     public double rate;
     public ArrayList<String> assistantsIds;
 
-    public ConcertHistorial(){}
+    public ConcertHistory(){}
+
+    public ConcertHistory(String concertId) {
+        this.concertId = concertId;
+        this.numberAssistants = 0;
+        this.rate = 0.0;
+        this.assistantsIds = new ArrayList<>();
+    }
 
     public String getId() {
         return id;
