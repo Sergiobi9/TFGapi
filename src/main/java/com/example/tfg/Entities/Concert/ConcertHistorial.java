@@ -1,10 +1,10 @@
-package com.example.tfg.Entities.Gig;
+package com.example.tfg.Entities.Concert;
 
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 
-public class GigHistorial {
+public class ConcertHistorial {
 
     @Id
     public String id;
@@ -13,5 +13,5 @@ public class GigHistorial {
     public double rate;
     public ArrayList<String> assistantsIds;
 
-    public GigHistorial(){}
+    public ConcertHistorial(){}
 }

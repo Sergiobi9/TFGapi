@@ -3,6 +3,7 @@ package com.example.tfg.Controllers.User;
 import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
+import com.example.tfg.Helpers.Constants;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
 import com.example.tfg.Repositories.Role.RoleRepository;
 import com.example.tfg.Repositories.User.UserRepository;
@@ -32,7 +33,7 @@ public class UserController {
     @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        Role userRole = roleRepository.findByRole("userRole");
+        Role userRole = roleRepository.findByRole(Constants.USER_ROLE);
         user.setRoles(new HashSet<>(Collections.singletonList(userRole)));
 
         userRepository.insert(user);

@@ -1,10 +1,10 @@
-package com.example.tfg.Entities.Gig;
+package com.example.tfg.Entities.Concert;
 
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
 
-public class Gig {
+public class Concert {
 
     @Id
     public String id;

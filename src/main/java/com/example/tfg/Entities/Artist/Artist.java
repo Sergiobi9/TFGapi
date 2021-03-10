@@ -12,17 +12,9 @@ public class Artist {
 
     @Id
     private String id;
-    private String name;
-    private String country;
-    private int gender;
-    private String birthday;
-    private String email;
-    private String password;
-    private String profileUrl;
+    private String userId;
     private String bio;
     private String musicalStyle;
-    @DBRef
-    private Set<Role> roles;
 
     public Artist() {
     }
@@ -35,60 +27,12 @@ public class Artist {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getProfileUrl() {
-        return profileUrl;
-    }
-
-    public void setProfileUrl(String profileUrl) {
-        this.profileUrl = profileUrl;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getBio() {
@@ -105,13 +49,5 @@ public class Artist {
 
     public void setMusicalStyle(String musicalStyle) {
         this.musicalStyle = musicalStyle;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 }

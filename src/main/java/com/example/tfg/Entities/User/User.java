@@ -19,6 +19,8 @@ public class User {
     public String email;
     public String password;
     public String profileUrl;
+    public String userRole;
+
     @DBRef
     private Set<Role> roles;
 
@@ -87,6 +89,14 @@ public class User {
 
     public void setProfileUrl(String profileUrl) {
         this.profileUrl = profileUrl;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     public Set<Role> getRoles() {
