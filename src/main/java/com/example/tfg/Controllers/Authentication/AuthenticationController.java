@@ -42,11 +42,8 @@ public class AuthenticationController {
 
         if (Helpers.isNotNull(user)){
             String token = jwtTokenProvider.createToken(userEmail, user.getRoles());
-            model.put(ResponseInfo.INFO, ResponseInfo.LOGIN_INTENT_SUCESS);
             model.put("user", user);
             model.put("token", token);
-        } else {
-            model.put(ResponseInfo.INFO, ResponseInfo.LOGIN_INTENT_FAILED);
         }
 
         return new ResponseEntity(model, HttpStatus.valueOf(200));
