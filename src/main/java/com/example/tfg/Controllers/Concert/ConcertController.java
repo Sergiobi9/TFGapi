@@ -90,6 +90,7 @@ public class ConcertController {
         return new ResponseEntity(concertSuggestions, HttpStatus.valueOf(200));
     }
 
+    /* Radius in km */
     @GetMapping("/map/{userLatitude}/{userLongitude}/{radius}")
     public ResponseEntity getConcertsNearUser(@PathVariable double userLatitude,
                                               @PathVariable double userLongitude,
