@@ -4,6 +4,7 @@ import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Artist.ArtistInfo;
 import com.example.tfg.Entities.Concert.*;
 import com.example.tfg.Entities.User.User;
+import com.example.tfg.Helpers.Constants;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
 import com.example.tfg.Repositories.Concert.ConcertHistoryRepository;
 import com.example.tfg.Repositories.Concert.ConcertLocationRepository;
@@ -15,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -78,32 +81,74 @@ public class ConcertController {
             Concert concert = concerts.get(i);
             ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
 
-            ArrayList<String> concertImages = getConcertImages(concert.getNumberImages());
-            String concertCoverImage = getConcertCoverImage(concert.getId());
-            ArrayList<ArtistInfo> artistsInfoArrayList = getArtistsInfo(concert.getArtistsIds());
-
-            ConcertReduced concertReduced = new ConcertReduced(
-                    concert.getId(),
-                    concert.getName(),
-                    concertLocation.getLatitude(),
-                    concertLocation.getLongitude(),
-                    concertLocation.getStreet(),
-                    concert.getPrice(),
-                    concert.getDateStarts(),
-                    concert.getNumberAssistants(),
-                    concert.getDescription(),
-                    concertLocation.getPlaceDescription(),
-                    concert.getExtraDescription(),
-                    concertCoverImage,
-                    concertImages,
-                    artistsInfoArrayList
-            );
+            ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
 
             concertSuggestions.add(concertReduced);
         }
 
 
         return new ResponseEntity(concertSuggestions, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/map/{userLatitude}/{userLongitude}/{radius}")
+    public ResponseEntity getConcertsNearUser(@PathVariable double userLatitude,
+                                              @PathVariable double userLongitude,
+                                              @PathVariable double radius){
+
+        ArrayList<ConcertReduced> nearConcerts = new ArrayList<>();
+        List<Concert> concerts = concertRepository.findAll();
+
+        for(int i = 0; i < concerts.size(); i++) {
+
+            Concert currentConcert = concerts.get(i);
+            ConcertLocation concertLocation = concertLocationRepository.findByConcertId(currentConcert.getId());
+
+            double concertLatitude = concertLocation.getLatitude();
+            double concertLongitude = concertLocation.getLongitude();
+            double latitudeDistance = Math.toRadians(userLatitude - concertLatitude);
+            double longitudeDistance = Math.toRadians(userLongitude - concertLongitude);
+            double a = Math.sin(latitudeDistance / 2) * Math.sin(latitudeDistance / 2)
+                    + Math.cos(Math.toRadians(concertLatitude)) * Math.cos(Math.toRadians(userLatitude))
+                    * Math.sin(longitudeDistance / 2) * Math.sin(longitudeDistance / 2);
+
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            Double distance = Constants.EARTH_RADIUS * c;
+
+            distance = Math.pow(distance, 2);
+            distance = Math.sqrt(distance);
+
+            if (distance.intValue() <= radius) {
+                ConcertReduced concertReduced = createConcertReduced(currentConcert, concertLocation);
+                nearConcerts.add(concertReduced);
+            }
+        }
+
+        return new ResponseEntity(nearConcerts, HttpStatus.valueOf(200));
+    }
+
+    private ConcertReduced createConcertReduced(Concert currentConcert, ConcertLocation concertLocation) {
+        ArrayList<String> concertImages = getConcertImages(currentConcert.getNumberImages());
+        String concertCoverImage = getConcertCoverImage(currentConcert.getId());
+        ArrayList<ArtistInfo> artistsInfoArrayList = getArtistsInfo(currentConcert.getArtistsIds());
+
+        ConcertReduced concertReduced = new ConcertReduced(
+                currentConcert.getId(),
+                currentConcert.getName(),
+                concertLocation.getLatitude(),
+                concertLocation.getLongitude(),
+                concertLocation.getStreet(),
+                currentConcert.getPrice(),
+                currentConcert.getDateStarts(),
+                currentConcert.getNumberAssistants(),
+                currentConcert.getDescription(),
+                concertLocation.getPlaceDescription(),
+                currentConcert.getExtraDescription(),
+                concertCoverImage,
+                concertImages,
+                artistsInfoArrayList
+        );
+
+        return concertReduced;
     }
 
     private String getConcertCoverImage(String concertId){
