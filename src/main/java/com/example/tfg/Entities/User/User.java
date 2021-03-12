@@ -14,6 +14,8 @@ public class User {
     public String id;
     public String name;
     public String country;
+    private String city;
+    private String zipCode;
     public int gender;
     public String birthday;
     public String email;
@@ -23,7 +25,6 @@ public class User {
 
     @DBRef
     private Set<Role> roles;
-
 
     public User(){}
 
@@ -49,6 +50,22 @@ public class User {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
     }
 
     public int getGender() {
