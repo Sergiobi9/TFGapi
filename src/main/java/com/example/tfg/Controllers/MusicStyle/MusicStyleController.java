@@ -1,6 +1,7 @@
 package com.example.tfg.Controllers.MusicStyle;
 
 import com.example.tfg.Entities.MusicStyle.MusicStyle;
+import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Repositories.MusicStyle.MusicStyleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,6 @@ public class MusicStyleController {
 
 
     private String getMusicStyleImage(String musicStyleId){
-        return "";
+        return ImageStorage.MUSIC_STYLE_STORAGE + musicStyleId + ImageStorage.PNG_SUFFIX;
     }
 }
