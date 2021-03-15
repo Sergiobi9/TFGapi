@@ -44,7 +44,7 @@ public class UserController {
         return new ResponseEntity(user, HttpStatus.valueOf(200));
     }
 
-    @PostMapping("/existing/{email}")
+    @GetMapping("/existing/{email}")
     public ResponseEntity checkUserAlreadyExists(@PathVariable String email) {
         Map<Object, Object> model = new HashMap<>();
         User existingUser = userRepository.findUserByEmail(email);
