@@ -8,12 +8,11 @@ com/example/tfg/Entities/Artist/ArtistInfo.class
 com/example/tfg/Controllers/MusicStyle/MusicStyleController.class
 com/example/tfg/Helpers/Constants.class
 com/example/tfg/Entities/Concert/Concert.class
-com/example/tfg/Entities/User/UserMusicStylePreferences.class
 com/example/tfg/Controllers/Role/RoleController.class
 com/example/tfg/Entities/Concert/ConcertHistory.class
 com/example/tfg/Entities/Concert/ConcertReduced.class
 com/example/tfg/Entities/MusicStyle/MusicStyle.class
-com/example/tfg/Entities/User/UserArtistsPreferences.class
+com/example/tfg/Repositories/User/UserPreferencesRepository.class
 com/example/tfg/Security/CustomUserDetailsService.class
 com/example/tfg/Entities/Artist/Artist.class
 com/example/tfg/Helpers/ImageStorage.class
@@ -35,6 +34,8 @@ com/example/tfg/Controllers/Concert/ConcertController.class
 com/example/tfg/Repositories/Concert/ConcertHistoryRepository.class
 com/example/tfg/Repositories/User/UserRepository.class
 com/example/tfg/Security/CorsFilter.class
+com/example/tfg/Entities/User/UserPreferences.class
 com/example/tfg/Entities/User/User.class
 com/example/tfg/Repositories/MusicStyle/MusicStyleRepository.class
+com/example/tfg/Controllers/User/UserPreferencesController.class
 com/example/tfg/Controllers/Authentication/AuthenticationController.class

@@ -4,9 +4,11 @@ import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Entities.User.UserArtist;
+import com.example.tfg.Entities.User.UserPreferences;
 import com.example.tfg.Helpers.Constants;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
 import com.example.tfg.Repositories.Role.RoleRepository;
+import com.example.tfg.Repositories.User.UserPreferencesRepository;
 import com.example.tfg.Repositories.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +37,9 @@ public class UserController {
 
     @Autowired
     private PasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private UserPreferencesRepository userPreferencesRepository;
 
     @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody User user) {
@@ -76,5 +81,11 @@ public class UserController {
             model.put("info", Constants.USER_NOT_EXIST);
         }
         return new ResponseEntity(model, HttpStatus.valueOf(200));
+    }
+
+    @PostMapping("/register/preferences")
+    public ResponseEntity registerUserPreferences(@RequestBody UserPreferences userPreferences) {
+
+        return new ResponseEntity(userPreferences, HttpStatus.valueOf(200));
     }
 }
