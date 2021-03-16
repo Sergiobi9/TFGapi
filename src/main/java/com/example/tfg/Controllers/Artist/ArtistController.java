@@ -2,6 +2,7 @@ package com.example.tfg.Controllers.Artist;
 
 import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Artist.ArtistInfo;
+import com.example.tfg.Entities.Artist.ArtistUserRegisterSelection;
 import com.example.tfg.Entities.Authentication.AuthenticationData;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
@@ -56,9 +57,9 @@ public class ArtistController {
         return new ResponseEntity(model, HttpStatus.valueOf(200));
     }
 
-    @GetMapping("/all/styles")
+    @PostMapping("/all/styles")
     public ResponseEntity getArtistsByMusicStylesSelected(@RequestBody ArrayList<String> musicStylesIds) {
-        ArrayList<ArtistInfo> artistsToReturn = new ArrayList<>();
+        ArrayList<ArtistUserRegisterSelection> artistsToReturn = new ArrayList<>();
 
         for (int i = 0; i < musicStylesIds.size(); i++) {
             String musicStyleId = musicStylesIds.get(i);
@@ -70,8 +71,8 @@ public class ArtistController {
 
                 String artistProfileImage = getArtistImage(currentUserArtist.getId());
 
-                ArtistInfo artistInfo = new ArtistInfo(currentArtist.getUserId(), currentArtist.getArtistName(), currentUserArtist.getCountry(), currentUserArtist.getGender(), artistProfileImage, currentArtist.getBio(), currentArtist.getMusicalStyleId());
-                artistsToReturn.add(artistInfo);
+                ArtistUserRegisterSelection artistUserRegisterSelection = new ArtistUserRegisterSelection(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
+                artistsToReturn.add(artistUserRegisterSelection);
             }
         }
 

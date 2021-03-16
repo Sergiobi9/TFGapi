@@ -1,4 +1,5 @@
 com/example/tfg/Security/JwtConfigurer.class
+com/example/tfg/Entities/User/UserArtist.class
 com/example/tfg/Security/WebSecurityConfiguration.class
 com/example/tfg/Repositories/Role/RoleRepository.class
 com/example/tfg/Entities/Role/Role.class
@@ -19,6 +20,7 @@ com/example/tfg/Helpers/ImageStorage.class
 com/example/tfg/Helpers/Helpers.class
 com/example/tfg/Controllers/Artist/ArtistController.class
 com/example/tfg/Entities/Booking/Booking.class
+com/example/tfg/Entities/Artist/ArtistUserRegisterSelection.class
 com/example/tfg/TfGapiApplication.class
 com/example/tfg/Repositories/Concert/ConcertRepository.class
 com/example/tfg/Helpers/ResponseInfo.class

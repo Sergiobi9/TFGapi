@@ -1,4 +1,5 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/Concert.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/User/UserArtist.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/TfGapiApplication.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Security/JwtConfigurer.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Role/RoleController.java
@@ -14,6 +15,7 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertRegister.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Concert/ConcertHistoryRepository.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/User/User.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Artist/ArtistUserRegisterSelection.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/User/UserController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Role/Role.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Artist/ArtistInfo.java
