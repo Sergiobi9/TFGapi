@@ -12,7 +12,7 @@ public class UserPreferences {
     @Id
     public String id;
     public String userId;
-    public ArrayList<String> artistsId;
+    public ArrayList<String> artistsIds;
     public ArrayList<String> musicStylesIds;
 
     public UserPreferences(){}
@@ -33,12 +33,12 @@ public class UserPreferences {
         this.userId = userId;
     }
 
-    public ArrayList<String> getArtistsId() {
-        return artistsId;
+    public ArrayList<String> getArtistsIds() {
+        return artistsIds;
     }
 
-    public void setArtistsId(ArrayList<String> artistsId) {
-        this.artistsId = artistsId;
+    public void setArtistsIds(ArrayList<String> artistsId) {
+        this.artistsIds = artistsId;
     }
 
     public ArrayList<String> getMusicStylesIds() {
