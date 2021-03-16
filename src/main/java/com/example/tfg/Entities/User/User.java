@@ -28,6 +28,17 @@ public class User {
 
     public User(){}
 
+    public User(UserArtist userArtist) {
+        this.name = userArtist.getName();
+        this.country = userArtist.getCountry();
+        this.city = userArtist.getCity();
+        this.zipCode = userArtist.getZipCode();
+        this.gender = userArtist.getGender();
+        this.birthday = userArtist.getBirthday();
+        this.email = userArtist.getEmail();
+        this.password = userArtist.getPassword();
+    }
+
     public String getId() {
         return id;
     }

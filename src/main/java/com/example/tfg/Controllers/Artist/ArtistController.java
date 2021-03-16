@@ -1,11 +1,13 @@
 package com.example.tfg.Controllers.Artist;
 
 import com.example.tfg.Entities.Artist.Artist;
+import com.example.tfg.Entities.Artist.ArtistInfo;
 import com.example.tfg.Entities.Authentication.AuthenticationData;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Helpers.Constants;
 import com.example.tfg.Helpers.Helpers;
+import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
 import com.example.tfg.Repositories.Role.RoleRepository;
@@ -15,10 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -39,7 +38,7 @@ public class ArtistController {
         User userToBecomeArtist = userRepository.findUserById(artist.getUserId());
 
         Map<Object, Object> model = new HashMap<>();
-        if (userToBecomeArtist == null){
+        if (userToBecomeArtist == null) {
             model.put(ResponseInfo.INFO, ResponseInfo.USER_DO_NOT_EXIST);
             return new ResponseEntity(model, HttpStatus.valueOf(200));
         }
@@ -57,5 +56,29 @@ public class ArtistController {
         return new ResponseEntity(model, HttpStatus.valueOf(200));
     }
 
+    @GetMapping("/all/styles")
+    public ResponseEntity getArtistsByMusicStylesSelected(@RequestBody ArrayList<String> musicStylesIds) {
+        ArrayList<ArtistInfo> artistsToReturn = new ArrayList<>();
 
+        for (int i = 0; i < musicStylesIds.size(); i++) {
+            String musicStyleId = musicStylesIds.get(i);
+            List<Artist> artistsListByMusicStyles = artistRepository.getArtistsByMusicalStyleId(musicStyleId);
+
+            for (int j = 0; j < artistsListByMusicStyles.size(); j++) {
+                Artist currentArtist = artistsListByMusicStyles.get(j);
+                User currentUserArtist = userRepository.findUserById(currentArtist.getUserId());
+
+                String artistProfileImage = getArtistImage(currentUserArtist.getId());
+
+                ArtistInfo artistInfo = new ArtistInfo(currentArtist.getUserId(), currentArtist.getArtistName(), currentUserArtist.getCountry(), currentUserArtist.getGender(), artistProfileImage, currentArtist.getBio(), currentArtist.getMusicalStyleId());
+                artistsToReturn.add(artistInfo);
+            }
+        }
+
+        return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));
+    }
+
+    private String getArtistImage(String userId) {
+        return ImageStorage.ARTIST_STORAGE + userId + ImageStorage.PNG_SUFFIX;
+    }
 }

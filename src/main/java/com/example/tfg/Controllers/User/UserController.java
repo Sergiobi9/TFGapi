@@ -3,6 +3,7 @@ package com.example.tfg.Controllers.User;
 import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
+import com.example.tfg.Entities.User.UserArtist;
 import com.example.tfg.Helpers.Constants;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
 import com.example.tfg.Repositories.Role.RoleRepository;
@@ -27,6 +28,9 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
+    private ArtistRepository artistRepository;
+
+    @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
@@ -42,6 +46,23 @@ public class UserController {
         userRepository.insert(user);
 
         return new ResponseEntity(user, HttpStatus.valueOf(200));
+    }
+
+    @PostMapping("/create/artist")
+    public ResponseEntity createUserAsArtist(@RequestBody UserArtist userArtist) {
+
+        User user = new User(userArtist);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        Role userRole = roleRepository.findByRole(Constants.ARTIST_ROLE);
+        user.setRoles(new HashSet<>(Collections.singletonList(userRole)));
+        user.setUserRole(Constants.ARTIST_ROLE);
+
+        userRepository.insert(user);
+
+        Artist artist = new Artist(user.getId(), userArtist.getArtistName(), userArtist.getBio(), userArtist.getMusicalStyleId());
+        artistRepository.insert(artist);
+
+        return new ResponseEntity(artist, HttpStatus.valueOf(200));
     }
 
     @GetMapping("/existing/{email}")

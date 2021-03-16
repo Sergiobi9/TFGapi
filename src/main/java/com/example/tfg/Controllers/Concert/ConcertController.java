@@ -180,7 +180,7 @@ public class ConcertController {
                     userRetrieved.getGender(),
                     artistProfileImage,
                     artistRetrieved.getBio(),
-                    artistRetrieved.getMusicalStyle());
+                    artistRetrieved.getMusicalStyleId());
 
             artistsInfoArrayList.add(artistInfo);
         }
