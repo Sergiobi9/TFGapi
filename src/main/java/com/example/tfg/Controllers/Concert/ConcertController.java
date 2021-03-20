@@ -60,7 +60,8 @@ public class ConcertController {
                 concert.getId(),
                 concertRegister.getLatitude(),
                 concertRegister.getLongitude(),
-                concertRegister.getStreet(),
+                concertRegister.getPlaceName(),
+                concertRegister.getPlaceAddress(),
                 concertRegister.getPlaceDescription());
 
         concertLocationRepository.save(concertLocation);
@@ -137,7 +138,8 @@ public class ConcertController {
                 currentConcert.getName(),
                 concertLocation.getLatitude(),
                 concertLocation.getLongitude(),
-                concertLocation.getStreet(),
+                concertLocation.getPlaceName(),
+                concertLocation.getAddress(),
                 currentConcert.getPrice(),
                 currentConcert.getDateStarts(),
                 currentConcert.getNumberAssistants(),

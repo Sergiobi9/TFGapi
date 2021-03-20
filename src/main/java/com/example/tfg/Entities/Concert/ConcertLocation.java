@@ -11,25 +11,19 @@ public class ConcertLocation {
     public String concertId;
     public double latitude;
     public double longitude;
-    public String street;
+    public String placeName;
+    public String address;
     public String placeDescription;
 
     public ConcertLocation(){}
 
-    public ConcertLocation(String concertId, double latitude, double longitude, String street, String placeDescription) {
+    public ConcertLocation(String concertId, double latitude, double longitude, String placeName, String address, String placeDescription) {
         this.concertId = concertId;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.street = street;
+        this.placeName = placeName;
+        this.address = address;
         this.placeDescription = placeDescription;
-    }
-
-    public String getConcertId() {
-        return concertId;
-    }
-
-    public void setConcertId(String concertId) {
-        this.concertId = concertId;
     }
 
     public String getId() {
@@ -38,6 +32,14 @@ public class ConcertLocation {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getConcertId() {
+        return concertId;
+    }
+
+    public void setConcertId(String concertId) {
+        this.concertId = concertId;
     }
 
     public double getLatitude() {
@@ -56,12 +58,20 @@ public class ConcertLocation {
         this.longitude = longitude;
     }
 
-    public String getStreet() {
-        return street;
+    public String getPlaceName() {
+        return placeName;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPlaceDescription() {

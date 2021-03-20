@@ -23,7 +23,7 @@ public class User {
     public String profileUrl;
     public String userRole;
 
-    @DBRef
+    @DBRef(lazy = true)
     private Set<Role> roles;
 
     public User(){}

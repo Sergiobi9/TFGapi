@@ -7,7 +7,8 @@ public class ConcertRegister {
     public String name;
     public double latitude;
     public double longitude;
-    public String street;
+    public String placeName;
+    public String placeAddress;
     public String placeDescription;
     public String dateCreated;
     public String dateStarts;
@@ -45,12 +46,20 @@ public class ConcertRegister {
         this.longitude = longitude;
     }
 
-    public String getStreet() {
-        return street;
+    public String getPlaceName() {
+        return placeName;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+
+    public String getPlaceAddress() {
+        return placeAddress;
+    }
+
+    public void setPlaceAddress(String placeAddress) {
+        this.placeAddress = placeAddress;
     }
 
     public String getPlaceDescription() {

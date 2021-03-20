@@ -8,9 +8,10 @@ public class ConcertReduced {
 
     public String concertId;
     public String name;
-    public double latitude;
-    public double longitude;
-    public String street;
+    public double placeLatitude;
+    public double placeLongitude;
+    public String placeName;
+    public String placeAddress;
     public double price;
     public String dateStarts;
     public int numberAssistants;
@@ -23,12 +24,13 @@ public class ConcertReduced {
 
     public ConcertReduced(){}
 
-    public ConcertReduced(String concertId, String name, double latitude, double longitude, String street, double price, String dateStarts, int numberAssistants, String description, String placeDescription, String extraDescription, String concertCoverImage, ArrayList<String> imagesUrls, ArrayList<ArtistInfo> artists) {
+    public ConcertReduced(String concertId, String name, double placeLatitude, double placeLongitude, String placeName, String placeAddress, double price, String dateStarts, int numberAssistants, String description, String placeDescription, String extraDescription, String concertCoverImage, ArrayList<String> imagesUrls, ArrayList<ArtistInfo> artists) {
         this.concertId = concertId;
         this.name = name;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.street = street;
+        this.placeLatitude = placeLatitude;
+        this.placeLongitude = placeLongitude;
+        this.placeName = placeName;
+        this.placeAddress = placeAddress;
         this.price = price;
         this.dateStarts = dateStarts;
         this.numberAssistants = numberAssistants;
@@ -56,28 +58,36 @@ public class ConcertReduced {
         this.name = name;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public double getPlaceLatitude() {
+        return placeLatitude;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    public void setPlaceLatitude(double placeLatitude) {
+        this.placeLatitude = placeLatitude;
     }
 
-    public double getLongitude() {
-        return longitude;
+    public double getPlaceLongitude() {
+        return placeLongitude;
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setPlaceLongitude(double placeLongitude) {
+        this.placeLongitude = placeLongitude;
     }
 
-    public String getStreet() {
-        return street;
+    public String getPlaceName() {
+        return placeName;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
+    }
+
+    public String getPlaceAddress() {
+        return placeAddress;
+    }
+
+    public void setPlaceAddress(String placeAddress) {
+        this.placeAddress = placeAddress;
     }
 
     public double getPrice() {
