@@ -80,14 +80,11 @@ public class ArtistController {
     public ResponseEntity getArtists(@PathVariable("userId") String userId) {
 
         List<Artist> allArtists = artistRepository.findAll();
+        allArtists.removeIf(x -> x.getUserId().equals(userId));
+
         ArrayList<ArtistSimplified> artistsToReturn = new ArrayList<>();
 
         for (int i = 0; i < allArtists.size(); i++){
-            String artistId = allArtists.get(i).getUserId();
-            if (artistId.equals(userId)){
-                allArtists.remove(i);
-            }
-
             Artist currentArtist = allArtists.get(i);
             String artistProfileImage = getArtistImage(currentArtist.getUserId());
 
