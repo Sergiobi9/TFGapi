@@ -69,7 +69,7 @@ public class ConcertController {
         ConcertHistory concertHistory = new ConcertHistory(concert.getId());
         concertHistoryRepository.save(concertHistory);
 
-        return new ResponseEntity(concert.getId(), HttpStatus.valueOf(200));
+        return new ResponseEntity(concert, HttpStatus.valueOf(200));
     }
 
     @GetMapping("/home/{userId}")
