@@ -1,13 +1,10 @@
 package com.example.tfg.Controllers.Artist;
 
 import com.example.tfg.Entities.Artist.Artist;
-import com.example.tfg.Entities.Artist.ArtistInfo;
-import com.example.tfg.Entities.Artist.ArtistUserRegisterSelection;
-import com.example.tfg.Entities.Authentication.AuthenticationData;
+import com.example.tfg.Entities.Artist.ArtistSimplified;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Helpers.Constants;
-import com.example.tfg.Helpers.Helpers;
 import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
@@ -59,7 +56,7 @@ public class ArtistController {
 
     @PostMapping("/all/styles")
     public ResponseEntity getArtistsByMusicStylesSelected(@RequestBody ArrayList<String> musicStylesIds) {
-        ArrayList<ArtistUserRegisterSelection> artistsToReturn = new ArrayList<>();
+        ArrayList<ArtistSimplified> artistsToReturn = new ArrayList<>();
 
         for (int i = 0; i < musicStylesIds.size(); i++) {
             String musicStyleId = musicStylesIds.get(i);
@@ -71,9 +68,31 @@ public class ArtistController {
 
                 String artistProfileImage = getArtistImage(currentUserArtist.getId());
 
-                ArtistUserRegisterSelection artistUserRegisterSelection = new ArtistUserRegisterSelection(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
+                ArtistSimplified artistUserRegisterSelection = new ArtistSimplified(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
                 artistsToReturn.add(artistUserRegisterSelection);
             }
+        }
+
+        return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/all/{userId}")
+    public ResponseEntity getArtists(@PathVariable("userId") String userId) {
+
+        List<Artist> allArtists = artistRepository.findAll();
+        ArrayList<ArtistSimplified> artistsToReturn = new ArrayList<>();
+
+        for (int i = 0; i < allArtists.size(); i++){
+            String artistId = allArtists.get(i).getUserId();
+            if (artistId.equals(userId)){
+                allArtists.remove(i);
+            }
+
+            Artist currentArtist = allArtists.get(i);
+            String artistProfileImage = getArtistImage(currentArtist.getUserId());
+
+            ArtistSimplified artistUserRegisterSelection = new ArtistSimplified(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
+            artistsToReturn.add(artistUserRegisterSelection);
         }
 
         return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));

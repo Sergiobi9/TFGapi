@@ -1,13 +1,13 @@
 package com.example.tfg.Entities.Artist;
 
-public class ArtistUserRegisterSelection {
+public class ArtistSimplified {
 
     public String artistId;
     public String artistName;
     public String profileUrl;
     public String musicalStyle;
 
-    public ArtistUserRegisterSelection(String artistId, String artistName, String profileUrl, String musicalStyle) {
+    public ArtistSimplified(String artistId, String artistName, String profileUrl, String musicalStyle) {
         this.artistId = artistId;
         this.artistName = artistName;
         this.profileUrl = profileUrl;
