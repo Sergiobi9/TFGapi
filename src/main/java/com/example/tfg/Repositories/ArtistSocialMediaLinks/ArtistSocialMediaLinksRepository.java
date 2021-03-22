@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface ArtistSocialMediaLinksRepository extends MongoRepository<ArtistSocialMediaLinks, String> {
 
-    ArtistSocialMediaLinksRepository findArtistSocialMediaLinksByUserId(String userId);
+    ArtistSocialMediaLinks findArtistSocialMediaLinksByUserId(String userId);
 }

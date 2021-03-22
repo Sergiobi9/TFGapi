@@ -1,7 +1,9 @@
 package com.example.tfg.Controllers.Artist;
 
 import com.example.tfg.Entities.Artist.Artist;
+import com.example.tfg.Entities.Artist.ArtistProfileInfo;
 import com.example.tfg.Entities.Artist.ArtistSimplified;
+import com.example.tfg.Entities.ArtistSocialMediaLinks.ArtistSocialMediaLinks;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Entities.User.UserPreferences;
@@ -9,6 +11,7 @@ import com.example.tfg.Helpers.Constants;
 import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
+import com.example.tfg.Repositories.ArtistSocialMediaLinks.ArtistSocialMediaLinksRepository;
 import com.example.tfg.Repositories.Role.RoleRepository;
 import com.example.tfg.Repositories.User.UserPreferencesRepository;
 import com.example.tfg.Repositories.User.UserRepository;
@@ -35,6 +38,9 @@ public class ArtistController {
 
     @Autowired
     private UserPreferencesRepository userPreferencesRepository;
+
+    @Autowired
+    private ArtistSocialMediaLinksRepository artistSocialMediaLinksRepository;
 
     @PostMapping("/create")
     public ResponseEntity createNewArtist(@RequestBody Artist artist) {
@@ -127,8 +133,19 @@ public class ArtistController {
     }
 
     @GetMapping("/info/{artistId}/{userId}")
-    public ResponseEntity getArtistInfo(@PathVariable("artistId") String artistId) {
-        return new ResponseEntity(HttpStatus.valueOf(200));
+    public ResponseEntity getArtistInfo(@PathVariable("artistId") String artistId, @PathVariable("userId") String userId) {
+
+        ArtistSocialMediaLinks artistSocialMediaLinks = artistSocialMediaLinksRepository.findArtistSocialMediaLinksByUserId(artistId);
+        Artist artist = artistRepository.findByUserId(artistId);
+        User artistAsUser = userRepository.findUserById(artistId);
+        UserPreferences userPreferences = userPreferencesRepository.findUserPreferencesByUserId(userId);
+
+        ArrayList<String> userFollowingArtistsIds = userPreferences.getArtistsIds();
+        boolean followingArtist = userFollowingArtistsIds.contains(artistId);
+
+        ArtistProfileInfo artistProfileInfo = getArtistProfileInfo(artist, artistAsUser, artistSocialMediaLinks, followingArtist);
+
+        return new ResponseEntity(artistProfileInfo, HttpStatus.valueOf(200));
     }
 
     @GetMapping("/follow/{artistId}/{userId}/{follow}")
@@ -167,6 +184,26 @@ public class ArtistController {
         }
 
         return new ResponseEntity(HttpStatus.valueOf(200));
+    }
+
+    private ArtistProfileInfo getArtistProfileInfo(Artist artist, User artistAsUser, ArtistSocialMediaLinks artistSocialMediaLinks, boolean followingArtist){
+        ArtistProfileInfo artistProfileInfo = new ArtistProfileInfo();
+        artistProfileInfo.setArtistId(artist.getUserId());
+        artistProfileInfo.setArtistName(artist.getArtistName());
+        artistProfileInfo.setCountry(artistAsUser.getCountry());
+        artistProfileInfo.setGender(artistAsUser.getGender());
+        artistProfileInfo.setBio(artist.getBio());
+        artistProfileInfo.setProfileUrl(getArtistImage(artist.getUserId()));
+        artistProfileInfo.setMusicalStyle(artist.getMusicalStyleId());
+        artistProfileInfo.setSpotifyLink(artistSocialMediaLinks.getSpotifyLink());
+        artistProfileInfo.setFacebookLink(artistSocialMediaLinks.getFacebookLink());
+        artistProfileInfo.setTwitterLink(artistSocialMediaLinks.getTwitterLink());
+        artistProfileInfo.setInstagramLink(artistSocialMediaLinks.getInstagramLink());
+        artistProfileInfo.setYoutubeLink(artistSocialMediaLinks.getYoutubeLink());
+        artistProfileInfo.setSnapchatLink(artistSocialMediaLinks.getSnapchatLink());
+        artistProfileInfo.setFollowing(followingArtist);
+
+        return artistProfileInfo;
     }
 
     private String getArtistImage(String userId) {
