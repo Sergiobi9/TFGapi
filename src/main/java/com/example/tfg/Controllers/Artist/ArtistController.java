@@ -100,7 +100,7 @@ public class ArtistController {
         return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));
     }
 
-    @GetMapping("/suggested/{userId}")
+    @GetMapping("/home/suggested/{userId}")
     public ResponseEntity getSuggestedArtistsToFollow(@PathVariable("userId") String userId) {
 
         List<Artist> allArtists = artistRepository.findAll();
