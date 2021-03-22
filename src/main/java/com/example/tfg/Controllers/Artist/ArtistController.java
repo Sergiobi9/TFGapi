@@ -4,11 +4,13 @@ import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Artist.ArtistSimplified;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
+import com.example.tfg.Entities.User.UserPreferences;
 import com.example.tfg.Helpers.Constants;
 import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
 import com.example.tfg.Repositories.Role.RoleRepository;
+import com.example.tfg.Repositories.User.UserPreferencesRepository;
 import com.example.tfg.Repositories.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,9 @@ public class ArtistController {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private UserPreferencesRepository userPreferencesRepository;
 
     @PostMapping("/create")
     public ResponseEntity createNewArtist(@RequestBody Artist artist) {
@@ -90,6 +95,32 @@ public class ArtistController {
 
             ArtistSimplified artistUserRegisterSelection = new ArtistSimplified(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
             artistsToReturn.add(artistUserRegisterSelection);
+        }
+
+        return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/suggested/{userId}")
+    public ResponseEntity getSuggestedArtistsToFollow(@PathVariable("userId") String userId) {
+
+        List<Artist> allArtists = artistRepository.findAll();
+        UserPreferences userPreferences = userPreferencesRepository.findUserPreferencesByUserId(userId);
+
+        ArrayList<ArtistSimplified> artistsToReturn = new ArrayList<>();
+        ArrayList<String> artistsFollowing = userPreferences.getArtistsIds();
+        ArrayList<String> musicStylesFollowing = userPreferences.getMusicStylesIds();
+
+        for (int i = 0; i < allArtists.size(); i++){
+            Artist currentArtist = allArtists.get(i);
+
+            if (musicStylesFollowing.contains(currentArtist.getMusicalStyleId())){
+                if (!artistsFollowing.contains(currentArtist.getUserId())){
+                    String artistProfileImage = getArtistImage(currentArtist.getUserId());
+
+                    ArtistSimplified artistUserRegisterSelection = new ArtistSimplified(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
+                    artistsToReturn.add(artistUserRegisterSelection);
+                }
+            }
         }
 
         return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));
