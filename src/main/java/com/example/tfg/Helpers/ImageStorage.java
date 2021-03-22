@@ -6,4 +6,6 @@ public class ImageStorage {
     public static final String PNG_SUFFIX = ".png";
 
     public static final String ARTIST_STORAGE = "https://artists-tfg.s3.us-east-2.amazonaws.com/";
+    public static final String CONCERT_IMAGES_STORAGE = "https://concerts-images-tfg.s3.us-east-2.amazonaws.com/";
+
 }

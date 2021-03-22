@@ -5,6 +5,7 @@ import com.example.tfg.Entities.Artist.ArtistInfo;
 import com.example.tfg.Entities.Concert.*;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Helpers.Constants;
+import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
 import com.example.tfg.Repositories.Concert.ConcertHistoryRepository;
 import com.example.tfg.Repositories.Concert.ConcertLocationRepository;
@@ -15,10 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -128,8 +128,46 @@ public class ConcertController {
         return new ResponseEntity(nearConcerts, HttpStatus.valueOf(200));
     }
 
+    @GetMapping("/all/{currentDate}")
+    public ResponseEntity getAllConcertsActiveByCurrentDate(@PathVariable String currentDate){
+
+        ArrayList<ConcertReduced> concertsToReturn = new ArrayList<>();
+        List<Concert> concerts = concertRepository.findAll();
+
+        for (int i = 0; i < concerts.size(); i++){
+            String concertDate = concerts.get(i).getDateStarts();
+
+            if (getDateIsAfter(concertDate, currentDate)){
+                Concert concert = concerts.get(i);
+                ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+
+                ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+
+                concertsToReturn.add(concertReduced);
+            }
+        }
+
+        return new ResponseEntity(concertsToReturn, HttpStatus.valueOf(200));
+    }
+
+    private boolean getDateIsAfter(String concertDate, String currentDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+
+        Date currentToDate = null;
+        Date concertToDate = null;
+        try {
+            currentToDate = sdf.parse(currentDate);
+            concertToDate = sdf.parse(concertDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return currentToDate.before(concertToDate);
+    }
+
     private ConcertReduced createConcertReduced(Concert currentConcert, ConcertLocation concertLocation) {
-        ArrayList<String> concertImages = getConcertImages(currentConcert.getNumberImages());
+        ArrayList<String> concertImages = getConcertPlacesImages(currentConcert.getId(), currentConcert.getNumberImages());
         String concertCoverImage = getConcertCoverImage(currentConcert.getId());
         ArrayList<ArtistInfo> artistsInfoArrayList = getArtistsInfo(currentConcert.getArtistsIds());
 
@@ -155,13 +193,18 @@ public class ConcertController {
     }
 
     private String getConcertCoverImage(String concertId){
-        return "https://www.edmradio.es/wp-content/uploads/2020/03/THE-WEEKND.jpg";
+        return ImageStorage.ARTIST_STORAGE + concertId + "_cover" +ImageStorage.PNG_SUFFIX;
     }
 
-    private ArrayList<String> getConcertImages(int numberImages){
-        ArrayList<String> concertImagesArrayList = new ArrayList<>();
+    private ArrayList<String> getConcertPlacesImages(String concertId, int numberPhotos){
+        ArrayList<String> concertImagesToReturn = new ArrayList<>();
 
-        return concertImagesArrayList;
+        for (int i = 0; i < numberPhotos; i++){
+            String imageUrl = ImageStorage.ARTIST_STORAGE + concertId + "_" + numberPhotos +ImageStorage.PNG_SUFFIX;
+            concertImagesToReturn.add(imageUrl);
+        }
+
+        return concertImagesToReturn;
     }
 
     private ArrayList<ArtistInfo> getArtistsInfo(ArrayList<String> artistsIds) {
@@ -191,6 +234,6 @@ public class ConcertController {
     }
 
     private String getArtistProfileImage(String artistId){
-        return "";
+        return ImageStorage.ARTIST_STORAGE + artistId + ImageStorage.PNG_SUFFIX;
     }
 }
