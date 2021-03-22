@@ -193,7 +193,7 @@ public class ConcertController {
     }
 
     private String getConcertCoverImage(String concertId){
-        return ImageStorage.ARTIST_STORAGE + concertId + "_cover" +ImageStorage.PNG_SUFFIX;
+        return ImageStorage.CONCERT_IMAGES_STORAGE + concertId + "_cover" +ImageStorage.PNG_SUFFIX;
     }
 
     private ArrayList<String> getConcertPlacesImages(String concertId, int numberPhotos){
