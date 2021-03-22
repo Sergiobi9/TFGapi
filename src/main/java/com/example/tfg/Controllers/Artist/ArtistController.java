@@ -126,6 +126,49 @@ public class ArtistController {
         return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));
     }
 
+    @GetMapping("/info/{artistId}/{userId}")
+    public ResponseEntity getArtistInfo(@PathVariable("artistId") String artistId) {
+        return new ResponseEntity(HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/follow/{artistId}/{userId}/{follow}")
+    public ResponseEntity followArtist(@PathVariable("artistId") String artistId,
+                                       @PathVariable("userId") String userId,
+                                       @PathVariable("follow") boolean follow) {
+
+        UserPreferences userPreferences = userPreferencesRepository.findUserPreferencesByUserId(userId);
+
+        if (userPreferences == null){
+            userPreferences = new UserPreferences();
+            userPreferences.setUserId(userId);
+            userPreferencesRepository.save(userPreferences);
+        }
+
+        ArrayList<String> userArtistIdsPreferences = userPreferences.getArtistsIds();
+        if (userArtistIdsPreferences == null) userArtistIdsPreferences = new ArrayList<>();
+
+        if (follow){
+            Artist artist = artistRepository.findByUserId(artistId);
+            ArrayList<String> musicStylesPreferences = userPreferences.getMusicStylesIds();
+
+            /* Following new artist that user would like his/her style */
+            String artistMusicStyle = artist.getMusicalStyleId();
+            if (!musicStylesPreferences.contains(artist.getMusicalStyleId())){
+                musicStylesPreferences.add(artistMusicStyle);
+                userPreferences.setMusicStylesIds(musicStylesPreferences);
+            }
+
+            if (!userArtistIdsPreferences.contains(artistId)){
+                userArtistIdsPreferences.add(artistId);
+                userPreferences.setArtistsIds(userArtistIdsPreferences);
+            }
+        } else {
+            userArtistIdsPreferences.remove(artistId);
+        }
+
+        return new ResponseEntity(HttpStatus.valueOf(200));
+    }
+
     private String getArtistImage(String userId) {
         return ImageStorage.ARTIST_STORAGE + userId + ImageStorage.PNG_SUFFIX;
     }

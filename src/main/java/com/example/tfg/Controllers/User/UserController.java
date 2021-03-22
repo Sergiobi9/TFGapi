@@ -1,12 +1,14 @@
 package com.example.tfg.Controllers.User;
 
 import com.example.tfg.Entities.Artist.Artist;
+import com.example.tfg.Entities.ArtistSocialMediaLinks.ArtistSocialMediaLinks;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Entities.User.UserArtist;
 import com.example.tfg.Entities.User.UserPreferences;
 import com.example.tfg.Helpers.Constants;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
+import com.example.tfg.Repositories.ArtistSocialMediaLinks.ArtistSocialMediaLinksRepository;
 import com.example.tfg.Repositories.Role.RoleRepository;
 import com.example.tfg.Repositories.User.UserPreferencesRepository;
 import com.example.tfg.Repositories.User.UserRepository;
@@ -41,6 +43,9 @@ public class UserController {
     @Autowired
     private UserPreferencesRepository userPreferencesRepository;
 
+    @Autowired
+    private ArtistSocialMediaLinksRepository artistSocialMediaLinksRepository;
+
     @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -64,7 +69,10 @@ public class UserController {
 
         userRepository.insert(user);
 
-        Artist artist = new Artist(user.getId(), userArtist.getArtistName(), userArtist.getBio(), userArtist.getMusicalStyleId());
+        ArtistSocialMediaLinks artistSocialMediaLinks = new ArtistSocialMediaLinks(user.getId());
+        artistSocialMediaLinksRepository.insert(artistSocialMediaLinks);
+
+        Artist artist = new Artist(user.getId(), userArtist.getArtistName(), userArtist.getBio(), userArtist.getMusicalStyleId(), artistSocialMediaLinks.getId());
         artistRepository.insert(artist);
 
         return new ResponseEntity(artist, HttpStatus.valueOf(200));
