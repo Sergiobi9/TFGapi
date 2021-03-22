@@ -136,9 +136,17 @@ public class ArtistController {
     public ResponseEntity getArtistInfo(@PathVariable("artistId") String artistId, @PathVariable("userId") String userId) {
 
         ArtistSocialMediaLinks artistSocialMediaLinks = artistSocialMediaLinksRepository.findArtistSocialMediaLinksByUserId(artistId);
+
         Artist artist = artistRepository.findByUserId(artistId);
         User artistAsUser = userRepository.findUserById(artistId);
         UserPreferences userPreferences = userPreferencesRepository.findUserPreferencesByUserId(userId);
+
+        if (artistSocialMediaLinks == null) {
+            artistSocialMediaLinks = new ArtistSocialMediaLinks(artistId);
+            artistSocialMediaLinksRepository.insert(artistSocialMediaLinks);
+            artist.setArtistSocialMediaLinksId(artistSocialMediaLinks.getId());
+            artistRepository.save(artist);
+        }
 
         ArrayList<String> userFollowingArtistsIds = userPreferences.getArtistsIds();
         boolean followingArtist = userFollowingArtistsIds.contains(artistId);
