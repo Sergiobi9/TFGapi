@@ -1,10 +1,12 @@
 package com.example.tfg.Controllers.Concert;
 
+import ch.qos.logback.core.util.TimeUtil;
 import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Artist.ArtistInfo;
 import com.example.tfg.Entities.Concert.*;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Helpers.Constants;
+import com.example.tfg.Helpers.DateUtils;
 import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
 import com.example.tfg.Repositories.Concert.ConcertHistoryRepository;
@@ -138,7 +140,7 @@ public class ConcertController {
         for (int i = 0; i < concerts.size(); i++){
             String concertDate = concerts.get(i).getDateStarts();
 
-            if (getDateIsAfter(concertDate, currentDate)){
+            if (DateUtils.getDateIsAfter(concertDate, currentDate)){
                 Concert concert = concerts.get(i);
                 ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
 
@@ -149,22 +151,6 @@ public class ConcertController {
         }
 
         return new ResponseEntity(concertsToReturn, HttpStatus.valueOf(200));
-    }
-
-    private boolean getDateIsAfter(String concertDate, String currentDate){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
-
-        Date currentToDate = null;
-        Date concertToDate = null;
-        try {
-            currentToDate = sdf.parse(currentDate);
-            concertToDate = sdf.parse(concertDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        return currentToDate.before(concertToDate);
     }
 
     private ConcertReduced createConcertReduced(Concert currentConcert, ConcertLocation concertLocation) {

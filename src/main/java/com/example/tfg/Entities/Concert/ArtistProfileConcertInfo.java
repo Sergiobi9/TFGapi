@@ -2,10 +2,10 @@ package com.example.tfg.Entities.Concert;
 
 public class ArtistProfileConcertInfo {
 
-    public String concertId;
-    public String concertName;
-    public String dateStarts;
-    public String coverImage;
+    private String concertId;
+    private String concertName;
+    private String dateStarts;
+    private String coverImage;
 
     public ArtistProfileConcertInfo(Concert concert){
         concertId = concert.getId();

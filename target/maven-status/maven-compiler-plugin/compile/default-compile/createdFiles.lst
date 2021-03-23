@@ -15,6 +15,7 @@ com/example/tfg/Entities/Concert/ConcertHistory.class
 com/example/tfg/Entities/Concert/ConcertReduced.class
 com/example/tfg/Entities/MusicStyle/MusicStyle.class
 com/example/tfg/Repositories/User/UserPreferencesRepository.class
+com/example/tfg/Helpers/DateUtils.class
 com/example/tfg/Security/CustomUserDetailsService.class
 com/example/tfg/Entities/Artist/Artist.class
 com/example/tfg/Helpers/ImageStorage.class

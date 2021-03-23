@@ -13,6 +13,7 @@ import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Entities.User.UserPreferences;
 import com.example.tfg.Helpers.Constants;
+import com.example.tfg.Helpers.DateUtils;
 import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
@@ -47,7 +48,7 @@ public class ArtistController {
     private RoleRepository roleRepository;
 
     @Autowired
-    MusicStyleRepository musicStyleRepository;
+    private MusicStyleRepository musicStyleRepository;
 
     @Autowired
     private UserPreferencesRepository userPreferencesRepository;
@@ -169,7 +170,9 @@ public class ArtistController {
 
         List<Concert> artistConcerts = concertRepository.findAllByUserId(artistId);
 
-        ArtistProfileInfo artistProfileInfo = getArtistProfileInfo(artist, artistAsUser, artistSocialMediaLinks, followingArtist, artistMusicStyleName, artistConcerts);
+        ArtistProfileInfo artistProfileInfo = getArtistProfileInfo(artist,
+                artistAsUser, artistSocialMediaLinks, followingArtist,
+                artistMusicStyleName, artistConcerts, currentDate);
 
         return new ResponseEntity(artistProfileInfo, HttpStatus.valueOf(200));
     }
@@ -217,7 +220,8 @@ public class ArtistController {
                                                    ArtistSocialMediaLinks artistSocialMediaLinks,
                                                    boolean followingArtist,
                                                    String artistMusicStyleName,
-                                                   List<Concert> artistConcert){
+                                                   List<Concert> artistConcert,
+                                                   String currentDate){
 
         List<String> followers = userPreferencesRepository.findAllByArtistsIdsContaining(artist.getUserId());
 
@@ -240,10 +244,11 @@ public class ArtistController {
         ArrayList<ArtistProfileConcertInfo> artistConcertsToReturn = new ArrayList<>();
         for (int i = 0; i < artistConcert.size(); i++){
             Concert concert = artistConcert.get(i);
-            ArtistProfileConcertInfo artistProfileConcertInfo = new ArtistProfileConcertInfo(concert);
-            artistProfileConcertInfo.setCoverImage(ImageStorage.getConcertCoverImage(artistProfileConcertInfo.getConcertId()));
-
-            artistConcertsToReturn.add(artistProfileConcertInfo);
+            if (DateUtils.getDateIsAfter(concert.getDateStarts(), currentDate)){
+                ArtistProfileConcertInfo artistProfileConcertInfo = new ArtistProfileConcertInfo(concert);
+                artistProfileConcertInfo.setCoverImage(ImageStorage.getConcertCoverImage(artistProfileConcertInfo.getConcertId()));
+                artistConcertsToReturn.add(artistProfileConcertInfo);
+            }
         }
         artistProfileInfo.setNumberOfConcerts(artistConcertsToReturn);
         artistProfileInfo.setMusicStyleName(artistMusicStyleName);
