@@ -212,6 +212,9 @@ public class ArtistController {
             userArtistIdsPreferences.remove(artistId);
         }
 
+        userPreferences.setArtistsIds(userArtistIdsPreferences);
+        userPreferencesRepository.save(userPreferences);
+
         return new ResponseEntity(HttpStatus.valueOf(200));
     }
 
