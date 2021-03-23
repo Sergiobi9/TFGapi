@@ -10,4 +10,5 @@ import java.util.List;
 public interface ConcertRepository extends MongoRepository<Concert, String> {
 
     List<Concert> findAllByArtistsIds(ArrayList<String> artistIds);
+    List<Concert> findAllByUserId(String userId);
 }

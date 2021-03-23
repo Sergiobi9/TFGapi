@@ -1,5 +1,10 @@
 package com.example.tfg.Entities.Artist;
 
+import com.example.tfg.Entities.Concert.ArtistProfileConcertInfo;
+import com.example.tfg.Entities.Concert.ConcertReduced;
+
+import java.util.ArrayList;
+
 public class ArtistProfileInfo {
 
     private String artistId;
@@ -15,6 +20,10 @@ public class ArtistProfileInfo {
     private String instagramLink;
     private String youtubeLink;
     private String snapchatLink;
+    private int followers;
+    private String musicStyleName;
+    private String memberSince;
+    private ArrayList<ArtistProfileConcertInfo> numberOfConcerts;
     private boolean following;
 
     public ArtistProfileInfo() { }
@@ -121,6 +130,38 @@ public class ArtistProfileInfo {
 
     public void setSnapchatLink(String snapchatLink) {
         this.snapchatLink = snapchatLink;
+    }
+
+    public int getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(int followers) {
+        this.followers = followers;
+    }
+
+    public String getMemberSince() {
+        return memberSince;
+    }
+
+    public void setMemberSince(String memberSince) {
+        this.memberSince = memberSince;
+    }
+
+    public ArrayList<ArtistProfileConcertInfo> getNumberOfConcerts() {
+        return numberOfConcerts;
+    }
+
+    public void setNumberOfConcerts(ArrayList<ArtistProfileConcertInfo> numberOfConcerts) {
+        this.numberOfConcerts = numberOfConcerts;
+    }
+
+    public String getMusicStyleName() {
+        return musicStyleName;
+    }
+
+    public void setMusicStyleName(String musicStyleName) {
+        this.musicStyleName = musicStyleName;
     }
 
     public boolean isFollowing() {

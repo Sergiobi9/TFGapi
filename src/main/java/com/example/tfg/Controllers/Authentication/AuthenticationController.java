@@ -25,10 +25,10 @@ public class AuthenticationController {
     private UserRepository userRepository;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    JwtTokenProvider jwtTokenProvider;
+    private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationData authenticationData) {

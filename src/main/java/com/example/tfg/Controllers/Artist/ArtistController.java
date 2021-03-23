@@ -1,9 +1,14 @@
 package com.example.tfg.Controllers.Artist;
 
+import com.example.tfg.Controllers.Concert.ConcertController;
 import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Artist.ArtistProfileInfo;
 import com.example.tfg.Entities.Artist.ArtistSimplified;
 import com.example.tfg.Entities.ArtistSocialMediaLinks.ArtistSocialMediaLinks;
+import com.example.tfg.Entities.Concert.ArtistProfileConcertInfo;
+import com.example.tfg.Entities.Concert.Concert;
+import com.example.tfg.Entities.Concert.ConcertReduced;
+import com.example.tfg.Entities.MusicStyle.MusicStyle;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Entities.User.UserPreferences;
@@ -12,6 +17,8 @@ import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.Artist.ArtistRepository;
 import com.example.tfg.Repositories.ArtistSocialMediaLinks.ArtistSocialMediaLinksRepository;
+import com.example.tfg.Repositories.Concert.ConcertRepository;
+import com.example.tfg.Repositories.MusicStyle.MusicStyleRepository;
 import com.example.tfg.Repositories.Role.RoleRepository;
 import com.example.tfg.Repositories.User.UserPreferencesRepository;
 import com.example.tfg.Repositories.User.UserRepository;
@@ -31,10 +38,16 @@ public class ArtistController {
     private ArtistRepository artistRepository;
 
     @Autowired
+    private ConcertRepository concertRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    MusicStyleRepository musicStyleRepository;
 
     @Autowired
     private UserPreferencesRepository userPreferencesRepository;
@@ -77,7 +90,7 @@ public class ArtistController {
                 Artist currentArtist = artistsListByMusicStyles.get(j);
                 User currentUserArtist = userRepository.findUserById(currentArtist.getUserId());
 
-                String artistProfileImage = getArtistImage(currentUserArtist.getId());
+                String artistProfileImage = ImageStorage.getArtistImage(currentUserArtist.getId());
 
                 ArtistSimplified artistUserRegisterSelection = new ArtistSimplified(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
                 artistsToReturn.add(artistUserRegisterSelection);
@@ -97,7 +110,7 @@ public class ArtistController {
 
         for (int i = 0; i < allArtists.size(); i++){
             Artist currentArtist = allArtists.get(i);
-            String artistProfileImage = getArtistImage(currentArtist.getUserId());
+            String artistProfileImage = ImageStorage.getArtistImage(currentArtist.getUserId());
 
             ArtistSimplified artistUserRegisterSelection = new ArtistSimplified(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
             artistsToReturn.add(artistUserRegisterSelection);
@@ -121,7 +134,7 @@ public class ArtistController {
 
             if (musicStylesFollowing.contains(currentArtist.getMusicalStyleId())){
                 if (!artistsFollowing.contains(currentArtist.getUserId())){
-                    String artistProfileImage = getArtistImage(currentArtist.getUserId());
+                    String artistProfileImage = ImageStorage.getArtistImage(currentArtist.getUserId());
 
                     ArtistSimplified artistUserRegisterSelection = new ArtistSimplified(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
                     artistsToReturn.add(artistUserRegisterSelection);
@@ -132,8 +145,8 @@ public class ArtistController {
         return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));
     }
 
-    @GetMapping("/info/{artistId}/{userId}")
-    public ResponseEntity getArtistInfo(@PathVariable("artistId") String artistId, @PathVariable("userId") String userId) {
+    @GetMapping("/info/{currentDate}/{artistId}/{userId}")
+    public ResponseEntity getArtistInfo(@PathVariable("currentDate") String currentDate, @PathVariable("artistId") String artistId, @PathVariable("userId") String userId) {
 
         ArtistSocialMediaLinks artistSocialMediaLinks = artistSocialMediaLinksRepository.findArtistSocialMediaLinksByUserId(artistId);
 
@@ -151,7 +164,12 @@ public class ArtistController {
         ArrayList<String> userFollowingArtistsIds = userPreferences.getArtistsIds();
         boolean followingArtist = userFollowingArtistsIds.contains(artistId);
 
-        ArtistProfileInfo artistProfileInfo = getArtistProfileInfo(artist, artistAsUser, artistSocialMediaLinks, followingArtist);
+        MusicStyle artistMusicStyle = musicStyleRepository.findMusicStyleById(artist.getMusicalStyleId());
+        String artistMusicStyleName = artistMusicStyle.getName();
+
+        List<Concert> artistConcerts = concertRepository.findAllByUserId(artistId);
+
+        ArtistProfileInfo artistProfileInfo = getArtistProfileInfo(artist, artistAsUser, artistSocialMediaLinks, followingArtist, artistMusicStyleName, artistConcerts);
 
         return new ResponseEntity(artistProfileInfo, HttpStatus.valueOf(200));
     }
@@ -194,14 +212,22 @@ public class ArtistController {
         return new ResponseEntity(HttpStatus.valueOf(200));
     }
 
-    private ArtistProfileInfo getArtistProfileInfo(Artist artist, User artistAsUser, ArtistSocialMediaLinks artistSocialMediaLinks, boolean followingArtist){
+    private ArtistProfileInfo getArtistProfileInfo(Artist artist,
+                                                   User artistAsUser,
+                                                   ArtistSocialMediaLinks artistSocialMediaLinks,
+                                                   boolean followingArtist,
+                                                   String artistMusicStyleName,
+                                                   List<Concert> artistConcert){
+
+        List<String> followers = userPreferencesRepository.findAllByArtistsIdsContaining(artist.getUserId());
+
         ArtistProfileInfo artistProfileInfo = new ArtistProfileInfo();
         artistProfileInfo.setArtistId(artist.getUserId());
         artistProfileInfo.setArtistName(artist.getArtistName());
         artistProfileInfo.setCountry(artistAsUser.getCountry());
         artistProfileInfo.setGender(artistAsUser.getGender());
         artistProfileInfo.setBio(artist.getBio());
-        artistProfileInfo.setProfileUrl(getArtistImage(artist.getUserId()));
+        artistProfileInfo.setProfileUrl(ImageStorage.getArtistImage(artist.getUserId()));
         artistProfileInfo.setMusicalStyle(artist.getMusicalStyleId());
         artistProfileInfo.setSpotifyLink(artistSocialMediaLinks.getSpotifyLink());
         artistProfileInfo.setFacebookLink(artistSocialMediaLinks.getFacebookLink());
@@ -209,12 +235,20 @@ public class ArtistController {
         artistProfileInfo.setInstagramLink(artistSocialMediaLinks.getInstagramLink());
         artistProfileInfo.setYoutubeLink(artistSocialMediaLinks.getYoutubeLink());
         artistProfileInfo.setSnapchatLink(artistSocialMediaLinks.getSnapchatLink());
+        artistProfileInfo.setFollowers(followers.size());
+        artistProfileInfo.setMemberSince(artist.getArtistSince());
+        ArrayList<ArtistProfileConcertInfo> artistConcertsToReturn = new ArrayList<>();
+        for (int i = 0; i < artistConcert.size(); i++){
+            Concert concert = artistConcert.get(i);
+            ArtistProfileConcertInfo artistProfileConcertInfo = new ArtistProfileConcertInfo(concert);
+            artistProfileConcertInfo.setCoverImage(ImageStorage.getConcertCoverImage(artistProfileConcertInfo.getConcertId()));
+
+            artistConcertsToReturn.add(artistProfileConcertInfo);
+        }
+        artistProfileInfo.setNumberOfConcerts(artistConcertsToReturn);
+        artistProfileInfo.setMusicStyleName(artistMusicStyleName);
         artistProfileInfo.setFollowing(followingArtist);
 
         return artistProfileInfo;
-    }
-
-    private String getArtistImage(String userId) {
-        return ImageStorage.ARTIST_STORAGE + userId + ImageStorage.PNG_SUFFIX;
     }
 }

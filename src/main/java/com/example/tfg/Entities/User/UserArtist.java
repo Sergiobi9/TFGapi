@@ -13,6 +13,7 @@ public class UserArtist {
     private String artistName;
     private String bio;
     private String musicalStyleId;
+    private String artistSince;
 
     public UserArtist() {
     }
@@ -103,5 +104,13 @@ public class UserArtist {
 
     public void setMusicalStyleId(String musicalStyleId) {
         this.musicalStyleId = musicalStyleId;
+    }
+
+    public String getArtistSince() {
+        return artistSince;
+    }
+
+    public void setArtistSince(String artistSince) {
+        this.artistSince = artistSince;
     }
 }

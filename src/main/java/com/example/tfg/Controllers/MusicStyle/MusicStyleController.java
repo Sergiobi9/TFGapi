@@ -34,16 +34,11 @@ public class MusicStyleController {
 
         for (int i = 0; i < allMusicStyles.size(); i++){
             String musicStyleId = allMusicStyles.get(i).getId();
-            String musicStyleImage = getMusicStyleImage(musicStyleId);
+            String musicStyleImage = ImageStorage.getMusicStyleImage(musicStyleId);
 
             allMusicStyles.get(i).setImageUrl(musicStyleImage);
         }
 
         return new ResponseEntity(allMusicStyles, HttpStatus.valueOf(200));
-    }
-
-
-    private String getMusicStyleImage(String musicStyleId){
-        return ImageStorage.MUSIC_STYLE_STORAGE + musicStyleId + ImageStorage.PNG_SUFFIX;
     }
 }

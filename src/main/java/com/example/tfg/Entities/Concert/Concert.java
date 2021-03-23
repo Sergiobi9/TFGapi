@@ -9,24 +9,26 @@ import java.util.ArrayList;
 public class Concert {
 
     @Id
-    public String id;
-    public String name;
-    public String dateCreated;
-    public String dateStarts;
-    public double price;
-    public int numberAssistants;
-    public String description;
-    public String extraDescription;
-    public boolean finished;
-    public int numberImages;
-    public ArrayList<String> artistsIds;
+    private String id;
+    private String name;
+    private String dateCreated;
+    private String dateStarts;
+    private String userId;
+    private double price;
+    private int numberAssistants;
+    private String description;
+    private String extraDescription;
+    private boolean finished;
+    private int numberImages;
+    private ArrayList<String> artistsIds;
 
     public Concert() {}
 
-    public Concert(String name, String dateCreated, String dateStarts, double price, int numberAssistants, String description, String extraDescription, boolean finished, int numberImages, ArrayList<String> artistsIds) {
+    public Concert(String name, String dateCreated, String dateStarts, String userId, double price, int numberAssistants, String description, String extraDescription, boolean finished, int numberImages, ArrayList<String> artistsIds) {
         this.name = name;
         this.dateCreated = dateCreated;
         this.dateStarts = dateStarts;
+        this.userId = userId;
         this.price = price;
         this.numberAssistants = numberAssistants;
         this.description = description;
@@ -58,6 +60,14 @@ public class Concert {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getDateCreated() {

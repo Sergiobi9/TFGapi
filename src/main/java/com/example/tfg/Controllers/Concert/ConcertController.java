@@ -46,6 +46,7 @@ public class ConcertController {
         Concert concert = new Concert(concertRegister.getName(),
                 concertRegister.getDateCreated(),
                 concertRegister.getDateStarts(),
+                concertRegister.getUserId(),
                 concertRegister.getPrice(),
                 concertRegister.getNumberAssistants(),
                 concertRegister.getDescription(),
@@ -168,7 +169,9 @@ public class ConcertController {
 
     private ConcertReduced createConcertReduced(Concert currentConcert, ConcertLocation concertLocation) {
         ArrayList<String> concertImages = getConcertPlacesImages(currentConcert.getId(), currentConcert.getNumberImages());
-        String concertCoverImage = getConcertCoverImage(currentConcert.getId());
+        String concertCoverImage = ImageStorage.getConcertCoverImage(currentConcert.getId());
+
+        currentConcert.getArtistsIds().add(0, currentConcert.getUserId());
         ArrayList<ArtistInfo> artistsInfoArrayList = getArtistsInfo(currentConcert.getArtistsIds());
 
         ConcertReduced concertReduced = new ConcertReduced(
@@ -192,15 +195,11 @@ public class ConcertController {
         return concertReduced;
     }
 
-    private String getConcertCoverImage(String concertId){
-        return ImageStorage.CONCERT_IMAGES_STORAGE + concertId + "_cover" +ImageStorage.PNG_SUFFIX;
-    }
-
     private ArrayList<String> getConcertPlacesImages(String concertId, int numberPhotos){
         ArrayList<String> concertImagesToReturn = new ArrayList<>();
 
         for (int i = 0; i < numberPhotos; i++){
-            String imageUrl = ImageStorage.ARTIST_STORAGE + concertId + "_" + numberPhotos +ImageStorage.PNG_SUFFIX;
+            String imageUrl = ImageStorage.getConcertPlaceImage(concertId, i);
             concertImagesToReturn.add(imageUrl);
         }
 
@@ -216,7 +215,7 @@ public class ConcertController {
             User userRetrieved = userRepository.findUserById(artistId);
             Artist artistRetrieved = artistRepository.findByUserId(artistId);
 
-            String artistProfileImage = getArtistProfileImage(artistId);
+            String artistProfileImage = ImageStorage.getArtistImage(artistId);
 
             ArtistInfo artistInfo = new ArtistInfo(
                     userRetrieved.getId(),
@@ -231,9 +230,5 @@ public class ConcertController {
         }
 
         return artistsInfoArrayList;
-    }
-
-    private String getArtistProfileImage(String artistId){
-        return ImageStorage.ARTIST_STORAGE + artistId + ImageStorage.PNG_SUFFIX;
     }
 }

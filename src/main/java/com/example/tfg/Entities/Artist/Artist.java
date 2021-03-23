@@ -16,17 +16,19 @@ public class Artist {
     private String artistName;
     private String bio;
     private String musicalStyleId;
+    private String artistSince;
     private String artistSocialMediaLinksId;
 
     public Artist() {
     }
 
-    public Artist(String userId, String artistName, String bio, String musicalStyleId, String artistSocialMediaLinksId) {
+    public Artist(String userId, String artistName, String bio, String musicalStyleId, String artistSocialMediaLinksId, String artistSince) {
         this.userId = userId;
         this.artistName = artistName;
         this.bio = bio;
         this.musicalStyleId = musicalStyleId;
         this.artistSocialMediaLinksId = artistSocialMediaLinksId;
+        this.artistSince = artistSince;
     }
 
     public String getId() {
@@ -63,6 +65,14 @@ public class Artist {
 
     public String getMusicalStyleId() {
         return musicalStyleId;
+    }
+
+    public String getArtistSince() {
+        return artistSince;
+    }
+
+    public void setArtistSince(String artistSince) {
+        this.artistSince = artistSince;
     }
 
     public void setMusicalStyleId(String musicalStyleId) {

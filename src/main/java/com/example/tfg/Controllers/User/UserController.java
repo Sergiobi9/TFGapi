@@ -72,7 +72,7 @@ public class UserController {
         ArtistSocialMediaLinks artistSocialMediaLinks = new ArtistSocialMediaLinks(user.getId());
         artistSocialMediaLinksRepository.insert(artistSocialMediaLinks);
 
-        Artist artist = new Artist(user.getId(), userArtist.getArtistName(), userArtist.getBio(), userArtist.getMusicalStyleId(), artistSocialMediaLinks.getId());
+        Artist artist = new Artist(user.getId(), userArtist.getArtistName(), userArtist.getBio(), userArtist.getMusicalStyleId(), artistSocialMediaLinks.getId(), userArtist.getArtistSince());
         artistRepository.insert(artist);
 
         return new ResponseEntity(artist, HttpStatus.valueOf(200));

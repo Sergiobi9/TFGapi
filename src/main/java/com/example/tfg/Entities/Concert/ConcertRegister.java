@@ -12,6 +12,7 @@ public class ConcertRegister {
     public String placeDescription;
     public String dateCreated;
     public String dateStarts;
+    private String userId;
     public double price;
     public int numberAssistants;
     public String description;
@@ -48,6 +49,14 @@ public class ConcertRegister {
 
     public String getPlaceName() {
         return placeName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void setPlaceName(String placeName) {

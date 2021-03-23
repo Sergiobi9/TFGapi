@@ -1,6 +1,7 @@
 com/example/tfg/Entities/Artist/ArtistSimplified.class
 com/example/tfg/Security/JwtConfigurer.class
 com/example/tfg/Entities/User/UserArtist.class
+com/example/tfg/Entities/Concert/ArtistProfileConcertInfo.class
 com/example/tfg/Security/WebSecurityConfiguration.class
 com/example/tfg/Repositories/Role/RoleRepository.class
 com/example/tfg/Entities/Role/Role.class
@@ -20,13 +21,16 @@ com/example/tfg/Helpers/ImageStorage.class
 com/example/tfg/Helpers/Helpers.class
 com/example/tfg/Controllers/Artist/ArtistController.class
 com/example/tfg/Entities/Booking/Booking.class
+com/example/tfg/Repositories/ArtistSocialMediaLinks/ArtistSocialMediaLinksRepository.class
 com/example/tfg/TfGapiApplication.class
+com/example/tfg/Entities/ArtistSocialMediaLinks/ArtistSocialMediaLinks.class
 com/example/tfg/Repositories/Concert/ConcertRepository.class
 com/example/tfg/Helpers/ResponseInfo.class
 com/example/tfg/Entities/Concert/ConcertLocation.class
 com/example/tfg/Controllers/User/UserController.class
 com/example/tfg/Security/JwtTokenFilter.class
 com/example/tfg/Entities/Concert/ConcertRegister.class
+com/example/tfg/Controllers/ArtistSocialMediaLinks/ArtistSocialMediaLinksController.class
 com/example/tfg/Repositories/Artist/ArtistRepository.class
 com/example/tfg/Security/JwtTokenProvider.class
 com/example/tfg/Entities/Authentication/AuthenticationData.class
@@ -37,5 +41,6 @@ com/example/tfg/Security/CorsFilter.class
 com/example/tfg/Entities/User/UserPreferences.class
 com/example/tfg/Entities/User/User.class
 com/example/tfg/Repositories/MusicStyle/MusicStyleRepository.class
+com/example/tfg/Entities/Artist/ArtistProfileInfo.class
 com/example/tfg/Controllers/User/UserPreferencesController.class
 com/example/tfg/Controllers/Authentication/AuthenticationController.class

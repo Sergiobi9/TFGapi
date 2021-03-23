@@ -6,12 +6,16 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Role/RoleController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Helpers/ResponseInfo.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertLocation.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Artist/ArtistProfileInfo.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Helpers/Constants.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/User/UserPreferences.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ArtistProfileConcertInfo.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Security/JwtTokenProvider.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertHistory.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Artist/Artist.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/ArtistSocialMediaLinks/ArtistSocialMediaLinks.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Role/RoleRepository.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/ArtistSocialMediaLinks/ArtistSocialMediaLinksRepository.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Booking/Booking.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Security/CustomUserDetailsService.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertRegister.java
@@ -38,4 +42,5 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Concert/ConcertLocationRepository.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Security/JwtTokenFilter.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/MusicStyle/MusicStyleRepository.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/ArtistSocialMediaLinks/ArtistSocialMediaLinksController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertReduced.java
