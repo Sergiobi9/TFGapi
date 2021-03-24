@@ -289,7 +289,7 @@ public class ConcertController {
         int concertBookings = bookingRepository.findAllByConcertId(concert.getId()).size();
         int concertNumberAssistants = concert.getNumberAssistants();
 
-        return concertBookings - concertNumberAssistants;
+        return  concertNumberAssistants - concertBookings;
     }
 
 
