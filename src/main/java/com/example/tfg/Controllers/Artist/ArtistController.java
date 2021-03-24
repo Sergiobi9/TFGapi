@@ -1,13 +1,11 @@
 package com.example.tfg.Controllers.Artist;
 
-import com.example.tfg.Controllers.Concert.ConcertController;
 import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Artist.ArtistProfileInfo;
 import com.example.tfg.Entities.Artist.ArtistSimplified;
 import com.example.tfg.Entities.ArtistSocialMediaLinks.ArtistSocialMediaLinks;
 import com.example.tfg.Entities.Concert.ArtistProfileConcertInfo;
 import com.example.tfg.Entities.Concert.Concert;
-import com.example.tfg.Entities.Concert.ConcertReduced;
 import com.example.tfg.Entities.MusicStyle.MusicStyle;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Entities.User.User;

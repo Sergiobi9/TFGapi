@@ -11,5 +11,10 @@ public class ResponseInfo {
     /* ARTIST */
     public static final String USER_DO_NOT_EXIST = "user not exist", USER_BECAME_ARTIST_SUCCESS = "user is now artist";
 
+    /* CONCERT */
+    public static final String CONCERT_DOES_NOT_EXIST = "concert does not exist";
+
+    /* BOOKING */
+    public static final String BOOKING_EXCEEDED = "concert bookings exceeded", BOOKING_SUCCEEDED = "Booking success";
 
 }

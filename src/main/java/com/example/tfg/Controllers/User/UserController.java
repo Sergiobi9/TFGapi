@@ -96,4 +96,10 @@ public class UserController {
 
         return new ResponseEntity(userPreferences, HttpStatus.valueOf(200));
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity getUserById(@PathVariable String userId) {
+        User user = userRepository.findUserById(userId);
+        return new ResponseEntity(user, HttpStatus.valueOf(200));
+    }
 }
