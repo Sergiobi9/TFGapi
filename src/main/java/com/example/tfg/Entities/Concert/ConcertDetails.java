@@ -1,5 +1,7 @@
 package com.example.tfg.Entities.Concert;
 
+import com.example.tfg.Helpers.ImageStorage;
+
 public class ConcertDetails {
 
     private String concertId;
@@ -7,6 +9,7 @@ public class ConcertDetails {
     private String description;
     private String extraDescription;
     private String concertDate;
+    private String concertCover;
     private double price;
 
     public ConcertDetails() { }
@@ -17,6 +20,7 @@ public class ConcertDetails {
         this.description = concert.getDescription();
         this.extraDescription = concert.getExtraDescription();
         this.concertDate = concert.getDateStarts();
+        this.concertCover = ImageStorage.getConcertCoverImage(concertId);
         this.price = concert.getPrice();
     }
 
@@ -58,6 +62,14 @@ public class ConcertDetails {
 
     public void setConcertDate(String concertDate) {
         this.concertDate = concertDate;
+    }
+
+    public String getConcertCover() {
+        return concertCover;
+    }
+
+    public void setConcertCover(String concertCover) {
+        this.concertCover = concertCover;
     }
 
     public double getPrice() {

@@ -19,7 +19,7 @@ public class ImageStorage {
     }
 
     public static String getConcertPlaceImage(String concertId, int photoNumber){
-        return ARTIST_STORAGE + concertId + "_" + photoNumber + PNG_SUFFIX;
+        return CONCERT_IMAGES_STORAGE + concertId + "_" + photoNumber + PNG_SUFFIX;
     }
 
     public static String getMusicStyleImage(String musicStyleId){
