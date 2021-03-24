@@ -3,15 +3,18 @@ package com.example.tfg.Controllers.Booking;
 import com.example.tfg.Entities.Booking.Booking;
 import com.example.tfg.Entities.Booking.RegisterBooking;
 import com.example.tfg.Entities.Concert.Concert;
+import com.example.tfg.Entities.Concert.ConcertHistory;
 import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.Booking.BookingRepository;
+import com.example.tfg.Repositories.Concert.ConcertHistoryRepository;
 import com.example.tfg.Repositories.Concert.ConcertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,10 +29,14 @@ public class BookingController {
     @Autowired
     private ConcertRepository concertRepository;
 
+    @Autowired
+    private ConcertHistoryRepository concertHistoryRepository;
+
     @PostMapping("/create")
     public ResponseEntity registerBooking(@RequestBody RegisterBooking booking) {
         Map<Object, Object> model = new HashMap<>();
 
+        String userId = booking.getUserId();
         String concertId = booking.getConcertId();
         Concert concert = concertRepository.findConcertById(concertId);
         if (concert == null){
@@ -52,8 +59,31 @@ public class BookingController {
             bookingRepository.insert(bookingToRegister);
         }
 
+        ConcertHistory concertHistory = concertHistoryRepository.findConcertHistoryByConcertId(concertId);
+        if (concertHistory == null){
+            concertHistory = registerConcertHistory(concertId);
+            concertHistoryRepository.insert(concertHistory);
+        }
+
+        ArrayList<String> assistantsIds = concertHistory.getAssistantsIds();
+        boolean userAlreadyAssistingToConcert = isUserAlreadyAssistingToConcert(assistantsIds, userId);
+
+        if (!userAlreadyAssistingToConcert){
+            assistantsIds.add(userId);
+            concertHistory.setAssistantsIds(assistantsIds);
+            concertHistoryRepository.save(concertHistory);
+        }
+
         model.put(ResponseInfo.INFO, ResponseInfo.BOOKING_SUCCEEDED);
         return new ResponseEntity(model, HttpStatus.valueOf(200));
+    }
+
+    private boolean isUserAlreadyAssistingToConcert(ArrayList<String> assistantsIds, String userId){
+        return assistantsIds != null && assistantsIds.contains(userId);
+    }
+
+    private ConcertHistory registerConcertHistory(String concerId){
+        return new ConcertHistory(concerId);
     }
 
 }
