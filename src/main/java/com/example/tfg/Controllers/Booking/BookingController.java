@@ -49,7 +49,7 @@ public class BookingController {
         int totalConcertBookings = bookingRepository.findAllByConcertId(concertId).size();
 
         int concertBookingsUpdated = totalConcertBookings + userBookings;
-        if (concertBookingsUpdated < numberAssistants){
+        if (concertBookingsUpdated > numberAssistants){
             model.put(ResponseInfo.INFO, ResponseInfo.BOOKING_EXCEEDED);
             return new ResponseEntity(model, HttpStatus.valueOf(200));
         }
