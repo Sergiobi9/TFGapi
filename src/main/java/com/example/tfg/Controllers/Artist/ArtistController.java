@@ -171,7 +171,10 @@ public class ArtistController {
         MusicStyle artistMusicStyle = musicStyleRepository.findMusicStyleById(artist.getMusicalStyleId());
         String artistMusicStyleName = artistMusicStyle.getName();
 
-        List<Concert> artistConcerts = concertRepository.findConcertByArtistsIdsContaining(artistId);
+        List<Concert> artistConcerts = concertRepository.findAllByUserId(artistId);
+        List<Concert> artistConcertsContributing = concertRepository.findAllByArtistsIdsContaining(artistId);
+
+        artistConcerts.addAll(artistConcertsContributing);
 
         ArtistProfileInfo artistProfileInfo = getArtistProfileInfo(artist,
                 artistAsUser, artistSocialMediaLinks, followingArtist,
