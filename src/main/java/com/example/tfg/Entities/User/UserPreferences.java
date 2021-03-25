@@ -17,6 +17,12 @@ public class UserPreferences {
 
     public UserPreferences(){}
 
+    public UserPreferences(String userId){
+        this.userId = userId;
+        artistsIds = new ArrayList<>();
+        musicStylesIds = new ArrayList<>();
+    }
+
     public String getId() {
         return id;
     }

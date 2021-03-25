@@ -160,13 +160,18 @@ public class ArtistController {
             artistRepository.save(artist);
         }
 
+        if (userPreferences == null){
+            userPreferences = new UserPreferences(userId);
+            userPreferencesRepository.insert(userPreferences);
+        }
+
         ArrayList<String> userFollowingArtistsIds = userPreferences.getArtistsIds();
         boolean followingArtist = userFollowingArtistsIds.contains(artistId);
 
         MusicStyle artistMusicStyle = musicStyleRepository.findMusicStyleById(artist.getMusicalStyleId());
         String artistMusicStyleName = artistMusicStyle.getName();
 
-        List<Concert> artistConcerts = concertRepository.findAllByUserId(artistId);
+        List<Concert> artistConcerts = concertRepository.findConcertByArtistsIdsContaining(artistId);
 
         ArtistProfileInfo artistProfileInfo = getArtistProfileInfo(artist,
                 artistAsUser, artistSocialMediaLinks, followingArtist,
