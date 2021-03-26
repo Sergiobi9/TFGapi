@@ -45,6 +45,7 @@ com/example/tfg/Repositories/ArtistSocialMediaLinks/ArtistSocialMediaLinksReposi
 com/example/tfg/Entities/ArtistSocialMediaLinks/ArtistSocialMediaLinks.class
 com/example/tfg/Helpers/ResponseInfo.class
 com/example/tfg/Controllers/User/UserController.class
+com/example/tfg/Entities/Booking/BookingTicketsList.class
 com/example/tfg/Controllers/Concert/ConcertController.class
 com/example/tfg/Entities/Concert/ConcertLocationReduced.class
 com/example/tfg/Repositories/User/UserRepository.class
