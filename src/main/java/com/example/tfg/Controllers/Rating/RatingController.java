@@ -31,7 +31,7 @@ public class RatingController {
 
     @GetMapping("/all/userId/{userId}/{currentDate}")
     public ResponseEntity getAssistedConcertsByUserId(@PathVariable String userId, @PathVariable String currentDate) {
-        List<Booking> bookings = bookingRepository.findAll();
+        List<Booking> bookings = bookingRepository.findAllByUserId(userId);
         ArrayList<String> concertIds = new ArrayList<>();
         ArrayList<Rating> concertsRating = new ArrayList<>();
 
