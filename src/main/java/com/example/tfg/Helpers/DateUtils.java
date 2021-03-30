@@ -11,7 +11,7 @@ public class DateUtils {
 
     private static SimpleDateFormat timePattern = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
 
-    public static boolean getDateIsAfter(String concertDate, String currentDate){
+    public static boolean currentDateIsBefore(String concertDate, String currentDate){
 
         Date currentToDate;
         Date concertToDate;
@@ -24,6 +24,21 @@ public class DateUtils {
         }
 
         return currentToDate.before(concertToDate);
+    }
+
+    public static boolean currentDateIsAfter(String concertDate, String currentDate){
+
+        Date currentToDate;
+        Date concertToDate;
+        try {
+            currentToDate = timePattern.parse(currentDate);
+            concertToDate = timePattern.parse(concertDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return currentToDate.after(concertToDate);
     }
 
     public static String getTimestamp(){

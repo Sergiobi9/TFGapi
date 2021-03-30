@@ -253,7 +253,7 @@ public class ArtistController {
         ArrayList<ArtistProfileConcertInfo> artistConcertsToReturn = new ArrayList<>();
         for (int i = 0; i < artistConcert.size(); i++){
             Concert concert = artistConcert.get(i);
-            if (DateUtils.getDateIsAfter(concert.getDateStarts(), currentDate)){
+            if (DateUtils.currentDateIsBefore(concert.getDateStarts(), currentDate)){
                 ArtistProfileConcertInfo artistProfileConcertInfo = new ArtistProfileConcertInfo(concert);
                 artistProfileConcertInfo.setCoverImage(ImageStorage.getConcertCoverImage(artistProfileConcertInfo.getConcertId()));
                 artistConcertsToReturn.add(artistProfileConcertInfo);

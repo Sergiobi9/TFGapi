@@ -143,7 +143,7 @@ public class ConcertController {
         for (int i = 0; i < concerts.size(); i++) {
             String concertDate = concerts.get(i).getDateStarts();
 
-            if (DateUtils.getDateIsAfter(concertDate, currentDate)) {
+            if (DateUtils.currentDateIsBefore(concertDate, currentDate)) {
                 Concert concert = concerts.get(i);
                 ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
 
@@ -291,6 +291,5 @@ public class ConcertController {
 
         return  concertNumberAssistants - concertBookings;
     }
-
 
 }

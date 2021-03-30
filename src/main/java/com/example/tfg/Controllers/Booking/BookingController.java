@@ -6,9 +6,7 @@ import com.example.tfg.Entities.Booking.RegisterBooking;
 import com.example.tfg.Entities.Concert.Concert;
 import com.example.tfg.Entities.Concert.ConcertHistory;
 import com.example.tfg.Entities.Concert.ConcertLocation;
-import com.example.tfg.Entities.Role.Role;
 import com.example.tfg.Helpers.DateUtils;
-import com.example.tfg.Helpers.Helpers;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.Booking.BookingRepository;
 import com.example.tfg.Repositories.Concert.ConcertHistoryRepository;
@@ -93,7 +91,7 @@ public class BookingController {
         for (int i = 0; i < userBookings.size(); i++){
             String concertId = userBookings.get(i).getConcertId();
             Concert concert = concertRepository.findConcertById(concertId);
-            if (DateUtils.getDateIsAfter(concert.getDateStarts(), currentDate) && !concertsController.contains(concertId)){
+            if (DateUtils.currentDateIsBefore(concert.getDateStarts(), currentDate) && !concertsController.contains(concertId)){
                 ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concertId);
                 List<Booking> userConcertBookingsList = bookingRepository.findAllByUserIdAndConcertId(userId, concertId);
                 ArrayList<Booking> userConcertBookings = new ArrayList<>(userConcertBookingsList);
