@@ -36,6 +36,7 @@ com/example/tfg/Repositories/Concert/ConcertLocationRepository.class
 com/example/tfg/Helpers/Constants.class
 com/example/tfg/Entities/Concert/FullConcertDetails.class
 com/example/tfg/Entities/Concert/ConcertHistory.class
+com/example/tfg/Repositories/Rating/RatingRepository.class
 com/example/tfg/Entities/Concert/ConcertReduced.class
 com/example/tfg/Entities/MusicStyle/MusicStyle.class
 com/example/tfg/Repositories/User/UserPreferencesRepository.class
@@ -44,11 +45,14 @@ com/example/tfg/Controllers/Artist/ArtistController.class
 com/example/tfg/Repositories/ArtistSocialMediaLinks/ArtistSocialMediaLinksRepository.class
 com/example/tfg/Entities/ArtistSocialMediaLinks/ArtistSocialMediaLinks.class
 com/example/tfg/Helpers/ResponseInfo.class
+com/example/tfg/Controllers/Rating/RatingController.class
 com/example/tfg/Controllers/User/UserController.class
+com/example/tfg/Entities/Rating/RatingSimplified.class
 com/example/tfg/Entities/Booking/BookingTicketsList.class
 com/example/tfg/Controllers/Concert/ConcertController.class
 com/example/tfg/Entities/Concert/ConcertLocationReduced.class
 com/example/tfg/Repositories/User/UserRepository.class
 com/example/tfg/Security/CorsFilter.class
+com/example/tfg/Entities/Rating/Rating.class
 com/example/tfg/Entities/User/UserPreferences.class
 com/example/tfg/Controllers/Authentication/AuthenticationController.class

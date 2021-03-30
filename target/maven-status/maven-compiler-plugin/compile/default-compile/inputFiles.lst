@@ -1,4 +1,6 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/Concert.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Rating/RatingRepository.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Rating/RatingController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Booking/BookingTicketsList.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/User/UserPreferencesRepository.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertLocation.java
@@ -12,6 +14,7 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/User/User.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Artist/ArtistController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Artist/ArtistRepository.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Rating/Rating.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertLocationReduced.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Booking/RegisterBooking.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Booking/BookingController.java
@@ -47,6 +50,7 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Authentication/AuthenticationData.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Artist/ArtistSimplified.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Concert/ConcertRepository.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Rating/RatingSimplified.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Security/CorsFilter.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/FullConcertDetails.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Security/WebSecurityConfiguration.java

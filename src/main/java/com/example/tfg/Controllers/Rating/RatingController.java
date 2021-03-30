@@ -3,7 +3,9 @@ package com.example.tfg.Controllers.Rating;
 import com.example.tfg.Entities.Booking.Booking;
 import com.example.tfg.Entities.Concert.Concert;
 import com.example.tfg.Entities.Rating.Rating;
+import com.example.tfg.Entities.Rating.RatingSimplified;
 import com.example.tfg.Helpers.DateUtils;
+import com.example.tfg.Helpers.ImageStorage;
 import com.example.tfg.Repositories.Booking.BookingRepository;
 import com.example.tfg.Repositories.Concert.ConcertRepository;
 import com.example.tfg.Repositories.Rating.RatingRepository;
@@ -33,7 +35,7 @@ public class RatingController {
     public ResponseEntity getAssistedConcertsByUserId(@PathVariable String userId, @PathVariable String currentDate) {
         List<Booking> bookings = bookingRepository.findAllByUserId(userId);
         ArrayList<String> concertIds = new ArrayList<>();
-        ArrayList<Rating> concertsRating = new ArrayList<>();
+        ArrayList<RatingSimplified> concertsRating = new ArrayList<>();
 
         for (int i = 0; i < bookings.size(); i++) {
             String concertId = bookings.get(i).getConcertId();
@@ -47,16 +49,21 @@ public class RatingController {
                         Rating ratingConcert = ratingRepository.findRatingByUserIdAndConcertId(userId, concertId);
 
                         if (ratingConcert == null){
-                            ratingConcert = new Rating(userId, concertId, -1, "");
+                            ratingConcert = new Rating(userId, concertId, -1, "", "");
                             ratingRepository.insert(ratingConcert);
                         }
 
                         concertIds.add(concertId);
-                        concertsRating.add(ratingConcert);
+                        RatingSimplified ratingSimplified = getRating(ratingConcert);
+                        concertsRating.add(ratingSimplified);
                     }
                 }
             }
         }
         return new ResponseEntity(concertsRating, HttpStatus.valueOf(200));
+    }
+
+    private RatingSimplified getRating(Rating rating){
+        return new RatingSimplified(rating);
     }
 }

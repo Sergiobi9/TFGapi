@@ -12,14 +12,16 @@ public class Rating {
     private String concertId;
     private double rate;
     private String comment;
+    private String ratingRatePosted;
 
     public Rating() { }
 
-    public Rating(String userId, String concertId, double rate, String comment) {
+    public Rating(String userId, String concertId, double rate, String comment, String ratingRatePosted) {
         this.userId = userId;
         this.concertId = concertId;
         this.rate = rate;
         this.comment = comment;
+        this.ratingRatePosted = ratingRatePosted;
     }
 
     public String getId() {
@@ -60,5 +62,13 @@ public class Rating {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getRatingRatePosted() {
+        return ratingRatePosted;
+    }
+
+    public void setRatingRatePosted(String ratingRatePosted) {
+        this.ratingRatePosted = ratingRatePosted;
     }
 }
