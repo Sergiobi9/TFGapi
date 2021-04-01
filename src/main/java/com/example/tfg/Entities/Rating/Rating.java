@@ -24,15 +24,6 @@ public class Rating {
         this.ratingRatePosted = ratingRatePosted;
     }
 
-    public Rating(RatingSimplified ratingSimplified){
-        this.id = ratingSimplified.getId();
-        this.userId = userId;
-        this.concertId = ratingSimplified.ge;
-        this.rate = rate;
-        this.comment = comment;
-        this.ratingRatePosted = ratingRatePosted;
-    }
-
     public String getId() {
         return id;
     }
