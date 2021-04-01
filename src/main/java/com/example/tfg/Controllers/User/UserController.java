@@ -84,6 +84,14 @@ public class UserController {
         return new ResponseEntity(user, HttpStatus.valueOf(200));
     }
 
+    @DeleteMapping("/{userId}")
+    public ResponseEntity deleteUser(@PathVariable String userId) {
+        User userToBeDeleted = userRepository.findUserById(userId);
+        userRepository.delete(userToBeDeleted);
+
+        return new ResponseEntity(HttpStatus.valueOf(200));
+    }
+
     @GetMapping("/existing/{email}")
     public ResponseEntity checkUserAlreadyExists(@PathVariable String email) {
         Map<Object, Object> model = new HashMap<>();

@@ -100,11 +100,28 @@ public class ArtistController {
     }
 
     @GetMapping("/all/{userId}")
-    public ResponseEntity getArtists(@PathVariable("userId") String userId) {
+    public ResponseEntity getAllArtistsExeptUser(@PathVariable("userId") String userId) {
 
         List<Artist> allArtists = artistRepository.findAll();
         allArtists.removeIf(x -> x.getUserId().equals(userId));
 
+        ArrayList<ArtistSimplified> artistsToReturn = new ArrayList<>();
+
+        for (int i = 0; i < allArtists.size(); i++){
+            Artist currentArtist = allArtists.get(i);
+            String artistProfileImage = ImageStorage.getArtistImage(currentArtist.getUserId());
+
+            ArtistSimplified artistUserRegisterSelection = new ArtistSimplified(currentArtist.getUserId(), currentArtist.getArtistName(), artistProfileImage, currentArtist.getMusicalStyleId());
+            artistsToReturn.add(artistUserRegisterSelection);
+        }
+
+        return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity getAllArtists() {
+
+        List<Artist> allArtists = artistRepository.findAll();
         ArrayList<ArtistSimplified> artistsToReturn = new ArrayList<>();
 
         for (int i = 0; i < allArtists.size(); i++){
