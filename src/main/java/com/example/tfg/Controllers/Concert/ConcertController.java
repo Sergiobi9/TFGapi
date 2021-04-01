@@ -50,6 +50,7 @@ public class ConcertController {
     @Autowired
     private BookingRepository bookingRepository;
 
+
     @PostMapping("/create")
     public ResponseEntity createConcert(@RequestBody ConcertRegister concertRegister) {
 
@@ -83,8 +84,8 @@ public class ConcertController {
         return new ResponseEntity(concert, HttpStatus.valueOf(200));
     }
 
-    @GetMapping("/home/suggestions/{userId}")
-    public ResponseEntity getConcertsForHome(@PathVariable String userId) {
+    @GetMapping("/home/suggestions/{userId}/{currentDate}")
+    public ResponseEntity getSuggestedConcertsForHome(@PathVariable String userId, @PathVariable String currentDate) {
         ArrayList<ConcertReduced> concertSuggestions = new ArrayList<>();
 
         List<Concert> concerts = concertRepository.findAll();
@@ -106,33 +107,53 @@ public class ConcertController {
             Concert concert = concerts.get(i);
             String concertId = concert.getId();
 
-            /* Add only non booked concerts */
-            if (!concertBookedIdsController.contains(concertId)) {
-                String ownerId = concert.getUserId();
-                ArrayList<String> artistsParticipating = concert.getArtistsIds();
-                Artist artist = artistRepository.findByUserId(ownerId);
 
-                /* Check if user is following artist or at least one of the participating */
-                boolean userIsFollowingSomeParticipatingArtist = userIsFollowingSomeParticipatingArtist(artistIdsPreferences, artistsParticipating);
-                if (artistIdsPreferences.contains(artist.getUserId()) || userIsFollowingSomeParticipatingArtist) {
+            String concertDate = concert.getDateStarts();
 
-                    /* Check if concert already added */
-                    addConcert(concertSuggestions, concertIdsController, concert, concertId);
-                } else {
-                    String artistMusicStyle = artist.getMusicalStyleId();
+            if (DateUtils.currentDateIsBefore(concertDate, currentDate)){
+                /* Add only non booked concerts */
+                if (!concertBookedIdsController.contains(concertId)) {
+                    String ownerId = concert.getUserId();
+                    ArrayList<String> artistsParticipating = concert.getArtistsIds();
+                    Artist artist = artistRepository.findByUserId(ownerId);
 
-                    /* Give user some suggestion of music style preferences matching */
-                    if (musicStyleIdsPreferences.contains(artistMusicStyle)) {
-                        addConcert(concertSuggestions, concertIdsController, concert, concertId);
+                    /* Check if user is following artist or at least one of the participating */
+                    boolean userIsFollowingSomeParticipatingArtist = userIsFollowingSomeParticipatingArtist(artistIdsPreferences, artistsParticipating);
+                    if (artistIdsPreferences.contains(artist.getUserId()) || userIsFollowingSomeParticipatingArtist) {
+
+                        /* Check if concert already added */
+                        if (!concertIdsController.contains(concertId)) {
+                            ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+                            ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+                            concertSuggestions.add(concertReduced);
+                            concertIdsController.add(concertId);
+                        }
                     } else {
-                        /* Get participating artists music styles */
-                        for (int x = 0; x < artistsParticipating.size(); x++){
-                            String artistId = artistsParticipating.get(x);
-                            Artist participatingArtist = artistRepository.findByUserId(artistId);
+                        String artistMusicStyle = artist.getMusicalStyleId();
 
-                            String participatingArtistMusicStyle = participatingArtist.getMusicalStyleId();
-                            if (musicStyleIdsPreferences.contains(participatingArtistMusicStyle)) {
-                                addConcert(concertSuggestions, concertIdsController, concert, concertId);
+                        /* Give user some suggestion of music style preferences matching */
+                        if (musicStyleIdsPreferences.contains(artistMusicStyle)) {
+                            if (!concertIdsController.contains(concertId)) {
+                                ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+                                ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+                                concertSuggestions.add(concertReduced);
+                                concertIdsController.add(concertId);
+                            }
+                        } else {
+                            /* Get participating artists music styles */
+                            for (int x = 0; x < artistsParticipating.size(); x++){
+                                String artistId = artistsParticipating.get(x);
+                                Artist participatingArtist = artistRepository.findByUserId(artistId);
+
+                                String participatingArtistMusicStyle = participatingArtist.getMusicalStyleId();
+                                if (musicStyleIdsPreferences.contains(participatingArtistMusicStyle)) {
+                                    if (!concertIdsController.contains(concertId)) {
+                                        ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+                                        ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+                                        concertSuggestions.add(concertReduced);
+                                        concertIdsController.add(concertId);
+                                    }
+                                }
                             }
                         }
                     }
@@ -143,13 +164,62 @@ public class ConcertController {
         return new ResponseEntity(concertSuggestions, HttpStatus.valueOf(200));
     }
 
-    private void addConcert(ArrayList<ConcertReduced> concertSuggestions, ArrayList<String> concertIdsController, Concert concert, String concertId) {
-        if (!concertIdsController.contains(concertId)) {
-            ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
-            ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
-            concertSuggestions.add(concertReduced);
-            concertIdsController.add(concertId);
+    @GetMapping("/home/popular/{userId}/{currentDate}")
+    public ResponseEntity getPopularConcertsForHome(@PathVariable String userId, @PathVariable String currentDate) {
+        ArrayList<ConcertReduced> popularConcerts = new ArrayList<>();
+
+        List<Concert> concerts = concertRepository.findAll();
+        List<Booking> userBookings = this.bookingRepository.findAllByUserId(userId);
+        ArrayList<String> concertBookedIdsController = new ArrayList<>();
+        ArrayList<String> concertIdsController = new ArrayList<>();
+
+        UserPreferences userPreferences = userPreferencesRepository.findUserPreferencesByUserId(userId);
+
+        for (int j = 0; j < userBookings.size(); j++) {
+            String concertId = userBookings.get(j).getConcertId();
+            if (!concertBookedIdsController.contains(concertId)) concertBookedIdsController.add(concertId);
         }
+
+        for (int i = 0; i < concerts.size(); i++) {
+            Concert concert = concerts.get(i);
+            String concertId = concert.getId();
+
+            String concertDate = concert.getDateStarts();
+            if (DateUtils.currentDateIsBefore(concertDate, currentDate)){
+
+                /* Add only non booked concerts */
+                if (!concertBookedIdsController.contains(concertId)) {
+
+                    ConcertHistory concertHistory = concertHistoryRepository.findConcertHistoryByConcertId(concertId);
+                    if (concertHistory != null){
+                        int concertBookings = bookingRepository.findAllByConcertId(concert.getId()).size();
+                        int concertPlaces = concert.getNumberAssistants();
+
+                        double concertPopularityRatio = getConcertPopularityRatio(concertBookings, concertPlaces);
+                        if (isConcertPopular(concertPopularityRatio)){
+                            if (!concertIdsController.contains(concertId)) {
+                                ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+                                ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+                                popularConcerts.add(concertReduced);
+                                concertIdsController.add(concertId);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return new ResponseEntity(popularConcerts, HttpStatus.valueOf(200));
+    }
+
+    private boolean isConcertPopular(double concertPopularityRatio) {
+        double maxRatioInterval = 0.95;
+        double minRatioInterval = 0.65;
+        return concertPopularityRatio > minRatioInterval && concertPopularityRatio < maxRatioInterval;
+    }
+
+    private double getConcertPopularityRatio(int concertBookings, int concertPlaces) {
+        return concertPlaces / concertBookings;
     }
 
     private boolean userIsFollowingSomeParticipatingArtist(ArrayList<String> artistIdsPreferences, ArrayList<String> artistsParticipating) {
