@@ -14,6 +14,7 @@ public class RatingSimplified {
     public RatingSimplified(){}
 
     public RatingSimplified(Rating rating, String concertName){
+        this.id = rating.getId();
         this.rate = rating.getRate();
         this.comment = rating.getComment();
         this.concertCover = ImageStorage.getConcertCoverImage(rating.getConcertId());
@@ -51,6 +52,14 @@ public class RatingSimplified {
 
     public void setConcertCover(String concertCover) {
         this.concertCover = concertCover;
+    }
+
+    public String getConcertName() {
+        return concertName;
+    }
+
+    public void setConcertName(String concertName) {
+        this.concertName = concertName;
     }
 
     public String getRatingDatePosted() {
