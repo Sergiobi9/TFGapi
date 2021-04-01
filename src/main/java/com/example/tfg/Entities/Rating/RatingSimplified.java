@@ -8,22 +8,16 @@ public class RatingSimplified {
     private double rate;
     private String comment;
     private String concertCover;
+    private String concertName;
     private String ratingDatePosted;
 
     public RatingSimplified(){}
 
-    public RatingSimplified(String id, double rate, String comment, String concertCover, String ratingDatePosted) {
-        this.id = id;
-        this.rate = rate;
-        this.comment = comment;
-        this.concertCover = concertCover;
-        this.ratingDatePosted = ratingDatePosted;
-    }
-
-    public RatingSimplified(Rating rating){
+    public RatingSimplified(Rating rating, String concertName){
         this.rate = rating.getRate();
         this.comment = rating.getComment();
         this.concertCover = ImageStorage.getConcertCoverImage(rating.getConcertId());
+        this.concertName = concertName;
         this.ratingDatePosted = rating.getRatingRatePosted();
     }
 

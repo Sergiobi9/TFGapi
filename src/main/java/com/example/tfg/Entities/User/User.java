@@ -11,17 +11,19 @@ import java.util.Set;
 public class User {
 
     @Id
-    public String id;
-    public String name;
-    public String country;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String country;
     private String city;
     private String zipCode;
-    public int gender;
-    public String birthday;
-    public String email;
-    public String password;
-    public String profileUrl;
-    public String userRole;
+    private int gender;
+    private String birthday;
+    private String phoneNumber;
+    private String email;
+    private String password;
+    private String profileUrl;
+    private String userRole;
 
     @DBRef(lazy = true)
     private Set<Role> roles;
@@ -29,7 +31,7 @@ public class User {
     public User(){}
 
     public User(UserArtist userArtist) {
-        this.name = userArtist.getName();
+        this.firstName = userArtist.getName();
         this.country = userArtist.getCountry();
         this.city = userArtist.getCity();
         this.zipCode = userArtist.getZipCode();
@@ -39,6 +41,7 @@ public class User {
         this.password = userArtist.getPassword();
     }
 
+
     public String getId() {
         return id;
     }
@@ -47,12 +50,20 @@ public class User {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getCountry() {
@@ -133,5 +144,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

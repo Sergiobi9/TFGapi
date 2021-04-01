@@ -78,6 +78,12 @@ public class UserController {
         return new ResponseEntity(artist, HttpStatus.valueOf(200));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity updateUser(@RequestBody User user) {
+        userRepository.save(user);
+        return new ResponseEntity(user, HttpStatus.valueOf(200));
+    }
+
     @GetMapping("/existing/{email}")
     public ResponseEntity checkUserAlreadyExists(@PathVariable String email) {
         Map<Object, Object> model = new HashMap<>();

@@ -40,21 +40,21 @@ public class RatingController {
         for (int i = 0; i < bookings.size(); i++) {
             String concertId = bookings.get(i).getConcertId();
 
-            if (!concertIds.contains(concertId)){
+            if (!concertIds.contains(concertId)) {
                 Concert concert = concertRepository.findConcertById(concertId);
 
-                if (concert != null){
+                if (concert != null) {
                     String concertDate = concert.getDateStarts();
-                    if (DateUtils.currentDateIsAfter(concertDate, currentDate)){
+                    if (DateUtils.currentDateIsAfter(concertDate, currentDate)) {
                         Rating ratingConcert = ratingRepository.findRatingByUserIdAndConcertId(userId, concertId);
-
-                        if (ratingConcert == null){
+                        String concertName = concert.getName();
+                        if (ratingConcert == null) {
                             ratingConcert = new Rating(userId, concertId, -1, "", "");
                             ratingRepository.insert(ratingConcert);
                         }
 
                         concertIds.add(concertId);
-                        RatingSimplified ratingSimplified = getRating(ratingConcert);
+                        RatingSimplified ratingSimplified = getRating(ratingConcert, concertName);
                         concertsRating.add(ratingSimplified);
                     }
                 }
@@ -63,7 +63,21 @@ public class RatingController {
         return new ResponseEntity(concertsRating, HttpStatus.valueOf(200));
     }
 
-    private RatingSimplified getRating(Rating rating){
-        return new RatingSimplified(rating);
+    private RatingSimplified getRating(Rating rating, String concertName) {
+        return new RatingSimplified(rating, concertName);
+    }
+
+
+    @PutMapping("/post/{currentDate}")
+    public ResponseEntity getAssistedConcertsByUserId(@PathVariable String currentDate, @RequestBody RatingSimplified ratingSimplified) {
+        String ratingId = ratingSimplified.getId();
+
+        Rating ratingRetrieved = ratingRepository.findRatingById(ratingId);
+        ratingRetrieved.setComment(ratingSimplified.getComment());
+        ratingRetrieved.setRate(ratingSimplified.getRate());
+        ratingRetrieved.setRatingRatePosted(currentDate);
+
+        ratingRepository.save(ratingRetrieved);
+        return new ResponseEntity(ratingSimplified, HttpStatus.valueOf(200));
     }
 }

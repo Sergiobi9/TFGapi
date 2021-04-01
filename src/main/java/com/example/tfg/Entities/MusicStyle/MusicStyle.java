@@ -1,5 +1,6 @@
 package com.example.tfg.Entities.MusicStyle;
 
+import com.example.tfg.Helpers.ImageStorage;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 

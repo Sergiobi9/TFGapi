@@ -224,6 +224,32 @@ public class ArtistController {
         return new ResponseEntity(HttpStatus.valueOf(200));
     }
 
+    @GetMapping("/following/userId/{userId}")
+    public ResponseEntity getArtistsFollowingByUserId(@PathVariable String userId) {
+
+        UserPreferences userPreferences = userPreferencesRepository.findUserPreferencesByUserId(userId);
+        ArrayList<ArtistSimplified> artistsFollowing = new ArrayList<>();
+
+        if (userPreferences != null){
+            ArrayList<String> artistsIds = userPreferences.getArtistsIds();
+
+            for (int i = 0; i < artistsIds.size(); i++){
+                String artistId = artistsIds.get(i);
+
+                Artist artist = artistRepository.findByUserId(artistId);
+                ArtistSimplified artistSimplified = getArtistSimplified(artist);
+
+                artistsFollowing.add(artistSimplified);
+            }
+        }
+
+        return new ResponseEntity(artistsFollowing, HttpStatus.valueOf(200));
+    }
+
+    private ArtistSimplified getArtistSimplified(Artist artist){
+        return new ArtistSimplified(artist.getUserId(), artist.getArtistName(), ImageStorage.getArtistImage(artist.getUserId()), artist.getMusicalStyleId());
+    }
+
     private ArtistProfileInfo getArtistProfileInfo(Artist artist,
                                                    User artistAsUser,
                                                    ArtistSocialMediaLinks artistSocialMediaLinks,
