@@ -173,8 +173,6 @@ public class ConcertController {
         ArrayList<String> concertBookedIdsController = new ArrayList<>();
         ArrayList<String> concertIdsController = new ArrayList<>();
 
-        UserPreferences userPreferences = userPreferencesRepository.findUserPreferencesByUserId(userId);
-
         for (int j = 0; j < userBookings.size(); j++) {
             String concertId = userBookings.get(j).getConcertId();
             if (!concertBookedIdsController.contains(concertId)) concertBookedIdsController.add(concertId);
@@ -219,7 +217,7 @@ public class ConcertController {
     }
 
     private double getConcertPopularityRatio(int concertBookings, int concertPlaces) {
-        return concertPlaces / concertBookings;
+        return (double) concertBookings / concertPlaces;
     }
 
     private boolean userIsFollowingSomeParticipatingArtist(ArrayList<String> artistIdsPreferences, ArrayList<String> artistsParticipating) {
