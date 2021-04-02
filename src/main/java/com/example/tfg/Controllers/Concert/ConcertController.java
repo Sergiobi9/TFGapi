@@ -107,7 +107,6 @@ public class ConcertController {
             Concert concert = concerts.get(i);
             String concertId = concert.getId();
 
-
             String concertDate = concert.getDateStarts();
 
             if (DateUtils.currentDateIsBefore(concertDate, currentDate)){
@@ -227,6 +226,28 @@ public class ConcertController {
             }
         }
         return false;
+    }
+
+    @GetMapping("/artist/{artistId}/{currentDate}")
+    public ResponseEntity getArtistConcerts(@PathVariable String artistId, @PathVariable String currentDate) {
+
+        ArrayList<ConcertReduced> artistConcerts = new ArrayList<>();
+        List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
+        List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
+
+        List<Concert> mergedList = new ArrayList<Concert>(new HashSet<Concert>(concertsMade){{ addAll(concertsParticipating); }});
+
+        for (Concert concert : mergedList) {
+            String concertDate = concert.getDateStarts();
+
+            if (DateUtils.currentDateIsBefore(concertDate, currentDate)) {
+                ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+                ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+                artistConcerts.add(concertReduced);
+            }
+        }
+
+        return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
     }
 
     /* Radius in km */
