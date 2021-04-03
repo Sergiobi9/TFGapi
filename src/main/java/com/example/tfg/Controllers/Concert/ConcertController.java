@@ -5,6 +5,7 @@ import com.example.tfg.Entities.Artist.ArtistInfo;
 import com.example.tfg.Entities.Artist.ArtistSimplified;
 import com.example.tfg.Entities.Booking.Booking;
 import com.example.tfg.Entities.Concert.*;
+import com.example.tfg.Entities.Rating.Rating;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Entities.User.UserPreferences;
 import com.example.tfg.Helpers.Constants;
@@ -15,6 +16,7 @@ import com.example.tfg.Repositories.Booking.BookingRepository;
 import com.example.tfg.Repositories.Concert.ConcertHistoryRepository;
 import com.example.tfg.Repositories.Concert.ConcertLocationRepository;
 import com.example.tfg.Repositories.Concert.ConcertRepository;
+import com.example.tfg.Repositories.Rating.RatingRepository;
 import com.example.tfg.Repositories.User.UserPreferencesRepository;
 import com.example.tfg.Repositories.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
+import static com.example.tfg.Helpers.Constants.USER_BOOKING;
+import static com.example.tfg.Helpers.Constants.USER_RATING;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -49,6 +56,9 @@ public class ConcertController {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private RatingRepository ratingRepository;
 
 
     @PostMapping("/create")
@@ -109,7 +119,7 @@ public class ConcertController {
 
             String concertDate = concert.getDateStarts();
 
-            if (DateUtils.currentDateIsBefore(concertDate, currentDate)){
+            if (DateUtils.currentDateIsBefore(concertDate, currentDate)) {
                 /* Add only non booked concerts */
                 if (!concertBookedIdsController.contains(concertId)) {
                     String ownerId = concert.getUserId();
@@ -140,7 +150,7 @@ public class ConcertController {
                             }
                         } else {
                             /* Get participating artists music styles */
-                            for (int x = 0; x < artistsParticipating.size(); x++){
+                            for (int x = 0; x < artistsParticipating.size(); x++) {
                                 String artistId = artistsParticipating.get(x);
                                 Artist participatingArtist = artistRepository.findByUserId(artistId);
 
@@ -182,18 +192,18 @@ public class ConcertController {
             String concertId = concert.getId();
 
             String concertDate = concert.getDateStarts();
-            if (DateUtils.currentDateIsBefore(concertDate, currentDate)){
+            if (DateUtils.currentDateIsBefore(concertDate, currentDate)) {
 
                 /* Add only non booked concerts */
                 if (!concertBookedIdsController.contains(concertId)) {
 
                     ConcertHistory concertHistory = concertHistoryRepository.findConcertHistoryByConcertId(concertId);
-                    if (concertHistory != null){
+                    if (concertHistory != null) {
                         int concertBookings = bookingRepository.findAllByConcertId(concert.getId()).size();
                         int concertPlaces = concert.getNumberAssistants();
 
                         double concertPopularityRatio = getConcertPopularityRatio(concertBookings, concertPlaces);
-                        if (isConcertPopular(concertPopularityRatio)){
+                        if (isConcertPopular(concertPopularityRatio)) {
                             if (!concertIdsController.contains(concertId)) {
                                 ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
                                 ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
@@ -235,7 +245,9 @@ public class ConcertController {
         List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
         List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
 
-        List<Concert> mergedList = new ArrayList<Concert>(new HashSet<Concert>(concertsMade){{ addAll(concertsParticipating); }});
+        List<Concert> mergedList = new ArrayList<Concert>(new HashSet<Concert>(concertsMade) {{
+            addAll(concertsParticipating);
+        }});
 
         for (Concert concert : mergedList) {
             String concertDate = concert.getDateStarts();
@@ -400,6 +412,56 @@ public class ConcertController {
 
         FullConcertDetails fullConcertDetails = getFullConcertDetails(concertDetails, concertLocationReduced, concertArtists, placesRemaining, userConcertBookingsIds, concertPhotosToReturn);
         return new ResponseEntity(fullConcertDetails, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/all/activity/{artistId}")
+    public ResponseEntity getArtistConcertsActivity(@PathVariable String artistId) {
+
+        List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
+        List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
+
+        List<Concert> mergedList = new ArrayList<Concert>(new HashSet<Concert>(concertsMade) {{
+            addAll(concertsParticipating);
+        }});
+        ArrayList<ConcertActivity> activityToReturn = new ArrayList<>();
+
+        for (Concert concert : mergedList) {
+            String concertId = concert.getId();
+            String concertName = concert.getName();
+
+            List<Booking> concertBookings = bookingRepository.findAllByConcertId(concertId);
+            List<Rating> concertRatings = ratingRepository.findAllByConcertId(concertId);
+
+            ArrayList<String> userIdController = new ArrayList<>();
+
+            for (int i = 0; i < concertBookings.size(); i++) {
+                String userId = concertBookings.get(i).getUserId();
+                if (!userIdController.contains(userId)) {
+                    User user = userRepository.findUserById(userId);
+                    if (user != null) {
+                        int userBookings = bookingRepository.findAllByUserIdAndConcertId(userId, concertId).size();
+                        String userBookingDate = concertBookings.get(i).dateBooked;
+                        userIdController.add(userId);
+                        activityToReturn.add(new ConcertActivity(user.getFirstName(), USER_BOOKING, "", userBookings, concertName, "", -1, userBookingDate));
+                    }
+                }
+            }
+
+            for (int j = 0; j < concertRatings.size(); j++) {
+                Rating rating = concertRatings.get(j);
+                String userId = concertRatings.get(j).getUserId();
+                User user = userRepository.findUserById(userId);
+                if (user != null) {
+                    String userRatingDate = rating.getRatingRatePosted();
+                    activityToReturn.add(new ConcertActivity(user.getFirstName(), USER_RATING, "", 0, concertName, rating.getComment(), rating.getRate(), userRatingDate));
+                }
+            }
+        }
+
+        /* Now short by date */
+        Collections.sort(activityToReturn);
+        Collections.reverse(activityToReturn);
+        return new ResponseEntity(activityToReturn, HttpStatus.valueOf(200));
     }
 
     private ArrayList<ArtistSimplified> getConcertArtistsSimplified(ArrayList<String> concertArtistsIds) {

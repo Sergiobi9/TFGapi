@@ -9,6 +9,7 @@ com/example/tfg/Controllers/Booking/BookingController.class
 com/example/tfg/Entities/Concert/ConcertDetails.class
 com/example/tfg/Helpers/DateUtils.class
 com/example/tfg/Entities/Artist/Artist.class
+com/example/tfg/Controllers/Concert/ConcertController$1.class
 com/example/tfg/Helpers/ImageStorage.class
 com/example/tfg/Helpers/Helpers.class
 com/example/tfg/Entities/Booking/Booking.class
