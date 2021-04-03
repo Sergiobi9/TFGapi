@@ -415,7 +415,7 @@ public class ConcertController {
     }
 
     @GetMapping("/all/activity/{artistId}")
-    public ResponseEntity getArtistConcertsActivity(@PathVariable String artistId) {
+    public ResponseEntity getUserConcertsActivityByArtist(@PathVariable String artistId) {
 
         List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
         List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
