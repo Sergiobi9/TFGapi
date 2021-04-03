@@ -262,6 +262,64 @@ public class ConcertController {
         return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
     }
 
+    @GetMapping("/all/hosting/artistId/{artistId}/{currentDate}")
+    public ResponseEntity getArtistCreatedConcerts(@PathVariable String artistId, @PathVariable String currentDate) {
+
+        ArrayList<ConcertReduced> artistConcerts = new ArrayList<>();
+        List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
+
+        for (Concert concert : concertsMade) {
+            ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+            ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+            artistConcerts.add(concertReduced);
+        }
+
+        return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/all/finished/artistId/{artistId}/{currentDate}")
+    public ResponseEntity getArtistFinishedConcerts(@PathVariable String artistId, @PathVariable String currentDate) {
+
+        ArrayList<ConcertReduced> artistConcerts = new ArrayList<>();
+        List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
+        List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
+
+        List<Concert> mergedList = new ArrayList<Concert>(new HashSet<Concert>(concertsMade) {{
+            addAll(concertsParticipating);
+        }});
+
+        for (Concert concert : mergedList) {
+            String concertDate = concert.getDateStarts();
+
+            if (DateUtils.currentDateIsAfter(concertDate, currentDate)) {
+                ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+                ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+                artistConcerts.add(concertReduced);
+            }
+        }
+
+        return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/all/featuring/artistId/{artistId}/{currentDate}")
+    public ResponseEntity getArtistFeaturingConcerts(@PathVariable String artistId, @PathVariable String currentDate) {
+
+        ArrayList<ConcertReduced> artistConcerts = new ArrayList<>();
+        List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
+
+        for (Concert concert : concertsParticipating) {
+            String concertDate = concert.getDateStarts();
+
+            if (DateUtils.currentDateIsBefore(concertDate, currentDate)) {
+                ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+                ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+                artistConcerts.add(concertReduced);
+            }
+        }
+
+        return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
+    }
+
     /* Radius in km */
     @GetMapping("/map/{userLatitude}/{userLongitude}/{radius}")
     public ResponseEntity getConcertsNearUser(@PathVariable double userLatitude,
