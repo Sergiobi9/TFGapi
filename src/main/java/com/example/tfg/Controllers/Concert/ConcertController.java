@@ -312,7 +312,7 @@ public class ConcertController {
         for (Concert concert : mergedList) {
             String concertDate = concert.getDateStarts();
 
-            if (DateUtils.currentDateIsAfter(concertDate, currentDate)) {
+            if (DateUtils.currentDateIsBefore(concertDate, currentDate)) {
                 ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
                 ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
                 artistConcerts.add(concertReduced);
@@ -322,7 +322,7 @@ public class ConcertController {
         Collections.sort(artistConcerts);
         Collections.reverse(artistConcerts);
 
-        ConcertReduced nextConcert = null;
+        ConcertReduced nextConcert = new ConcertReduced();
         if (!artistConcerts.isEmpty()){ nextConcert = artistConcerts.get(0); }
 
         return new ResponseEntity(nextConcert, HttpStatus.valueOf(200));
