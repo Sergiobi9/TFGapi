@@ -242,12 +242,10 @@ public class ConcertController {
     public ResponseEntity getArtistConcerts(@PathVariable String artistId, @PathVariable String currentDate) {
 
         ArrayList<ConcertReduced> artistConcerts = new ArrayList<>();
-        List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
-        List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
+        List<Concert> concertsMade = getArtistConcertsMade(artistId);
+        List<Concert> concertsParticipating = getArtistConcertsCollaborating(artistId);
 
-        List<Concert> mergedList = new ArrayList<Concert>(new HashSet<Concert>(concertsMade) {{
-            addAll(concertsParticipating);
-        }});
+        List<Concert> mergedList = getAllConcerts(concertsMade, concertsParticipating);
 
         for (Concert concert : mergedList) {
             String concertDate = concert.getDateStarts();
@@ -262,11 +260,15 @@ public class ConcertController {
         return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
     }
 
+    private List<Concert> getArtistConcertsCollaborating(@PathVariable String artistId) {
+        return concertRepository.findAllByArtistsIdsContaining(artistId);
+    }
+
     @GetMapping("/all/hosting/artistId/{artistId}/{currentDate}")
     public ResponseEntity getArtistCreatedConcerts(@PathVariable String artistId, @PathVariable String currentDate) {
 
         ArrayList<ConcertReduced> artistConcerts = new ArrayList<>();
-        List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
+        List<Concert> concertsMade = getArtistConcertsMade(artistId);
 
         for (Concert concert : concertsMade) {
             ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
@@ -281,12 +283,10 @@ public class ConcertController {
     public ResponseEntity getArtistFinishedConcerts(@PathVariable String artistId, @PathVariable String currentDate) {
 
         ArrayList<ConcertReduced> artistConcerts = new ArrayList<>();
-        List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
-        List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
+        List<Concert> concertsMade = getArtistConcertsMade(artistId);
+        List<Concert> concertsParticipating = getArtistConcertsCollaborating(artistId);
 
-        List<Concert> mergedList = new ArrayList<Concert>(new HashSet<Concert>(concertsMade) {{
-            addAll(concertsParticipating);
-        }});
+        List<Concert> mergedList = getAllConcerts(concertsMade, concertsParticipating);
 
         for (Concert concert : mergedList) {
             String concertDate = concert.getDateStarts();
@@ -301,11 +301,42 @@ public class ConcertController {
         return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
     }
 
+    @GetMapping("/next/artistId/{artistId}/{currentDate}")
+    public ResponseEntity getArtistNextConcert(@PathVariable String artistId, @PathVariable String currentDate) {
+
+        ArrayList<ConcertReduced> artistConcerts = new ArrayList<>();
+        List<Concert> concertsMade = getArtistConcertsMade(artistId);
+        List<Concert> concertsParticipating = getArtistConcertsCollaborating(artistId);
+        List<Concert> mergedList = getAllConcerts(concertsMade, concertsParticipating);
+
+        for (Concert concert : mergedList) {
+            String concertDate = concert.getDateStarts();
+
+            if (DateUtils.currentDateIsAfter(concertDate, currentDate)) {
+                ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+                ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+                artistConcerts.add(concertReduced);
+            }
+        }
+
+        Collections.sort(artistConcerts);
+        Collections.reverse(artistConcerts);
+
+        ConcertReduced nextConcert = null;
+        if (!artistConcerts.isEmpty()){ nextConcert = artistConcerts.get(0); }
+
+        return new ResponseEntity(nextConcert, HttpStatus.valueOf(200));
+    }
+
+    private List<Concert> getArtistConcertsMade(@PathVariable String artistId) {
+        return concertRepository.findAllByUserId(artistId);
+    }
+
     @GetMapping("/all/featuring/artistId/{artistId}/{currentDate}")
     public ResponseEntity getArtistFeaturingConcerts(@PathVariable String artistId, @PathVariable String currentDate) {
 
         ArrayList<ConcertReduced> artistConcerts = new ArrayList<>();
-        List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
+        List<Concert> concertsParticipating = getArtistConcertsCollaborating(artistId);
 
         for (Concert concert : concertsParticipating) {
             String concertDate = concert.getDateStarts();
@@ -475,12 +506,10 @@ public class ConcertController {
     @GetMapping("/all/activity/{artistId}")
     public ResponseEntity getUserConcertsActivityByArtist(@PathVariable String artistId) {
 
-        List<Concert> concertsMade = concertRepository.findAllByUserId(artistId);
-        List<Concert> concertsParticipating = concertRepository.findAllByArtistsIdsContaining(artistId);
+        List<Concert> concertsMade = getArtistConcertsMade(artistId);
+        List<Concert> concertsParticipating = getArtistConcertsCollaborating(artistId);
 
-        List<Concert> mergedList = new ArrayList<Concert>(new HashSet<Concert>(concertsMade) {{
-            addAll(concertsParticipating);
-        }});
+        List<Concert> mergedList = getAllConcerts(concertsMade, concertsParticipating);
         ArrayList<ConcertActivity> activityToReturn = new ArrayList<>();
 
         for (Concert concert : mergedList) {
@@ -520,6 +549,12 @@ public class ConcertController {
         Collections.sort(activityToReturn);
         Collections.reverse(activityToReturn);
         return new ResponseEntity(activityToReturn, HttpStatus.valueOf(200));
+    }
+
+    private ArrayList<Concert> getAllConcerts(List<Concert> concertsMade, List<Concert> concertsParticipating) {
+        return new ArrayList<Concert>(new HashSet<Concert>(concertsMade) {{
+            addAll(concertsParticipating);
+        }});
     }
 
     private ArrayList<ArtistSimplified> getConcertArtistsSimplified(ArrayList<String> concertArtistsIds) {

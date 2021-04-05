@@ -2,9 +2,11 @@ package com.example.tfg.Entities.Concert;
 
 import com.example.tfg.Entities.Artist.ArtistInfo;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-public class ConcertReduced {
+public class ConcertReduced implements Comparable<ConcertReduced> {
 
     public String concertId;
     public String name;
@@ -160,5 +162,16 @@ public class ConcertReduced {
 
     public void setArtists(ArrayList<ArtistInfo> artists) {
         this.artists = artists;
+    }
+
+    @Override
+    public int compareTo(ConcertReduced concertReduced) {
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+        try {
+            return sdf.parse(getDateStarts()).compareTo(sdf.parse(concertReduced.getDateStarts()));
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+        return -1;
     }
 }
