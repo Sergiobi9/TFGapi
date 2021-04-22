@@ -3,6 +3,7 @@ package com.example.tfg.Controllers.Artist;
 import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Artist.ArtistProfileInfo;
 import com.example.tfg.Entities.Artist.ArtistSimplified;
+import com.example.tfg.Entities.Artist.ArtistUserProfile;
 import com.example.tfg.Entities.ArtistSocialMediaLinks.ArtistSocialMediaLinks;
 import com.example.tfg.Entities.Concert.ArtistProfileConcertInfo;
 import com.example.tfg.Entities.Concert.Concert;
@@ -100,7 +101,7 @@ public class ArtistController {
     }
 
     @GetMapping("/all/{userId}")
-    public ResponseEntity getAllArtistsExeptUser(@PathVariable("userId") String userId) {
+    public ResponseEntity getAllArtistsExceptUser(@PathVariable("userId") String userId) {
 
         List<Artist> allArtists = artistRepository.findAll();
         allArtists.removeIf(x -> x.getUserId().equals(userId));
@@ -198,6 +199,24 @@ public class ArtistController {
                 artistMusicStyleName, artistConcerts, currentDate);
 
         return new ResponseEntity(artistProfileInfo, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/info/artistId/{artistId}")
+    public ResponseEntity getArtistUserProfile(@PathVariable("artistId") String artistId) {
+
+        ArtistSocialMediaLinks artistSocialMediaLinks = artistSocialMediaLinksRepository.findArtistSocialMediaLinksByUserId(artistId);
+
+        Artist artist = artistRepository.findByUserId(artistId);
+        User artistAsUser = userRepository.findUserById(artistId);
+
+        MusicStyle artistMusicStyle = musicStyleRepository.findMusicStyleById(artist.getMusicalStyleId());
+        String artistMusicStyleName = artistMusicStyle.getName();
+
+        ArtistUserProfile artistUserProfile = getArtistUserProfile(artist,
+                artistAsUser, artistSocialMediaLinks,
+                artistMusicStyleName);
+
+        return new ResponseEntity(artistUserProfile, HttpStatus.valueOf(200));
     }
 
     @GetMapping("/follow/{artistId}/{userId}/{follow}")
@@ -307,5 +326,30 @@ public class ArtistController {
         artistProfileInfo.setFollowing(followingArtist);
 
         return artistProfileInfo;
+    }
+
+    private ArtistUserProfile getArtistUserProfile(Artist artist,
+                                                   User artistAsUser,
+                                                   ArtistSocialMediaLinks artistSocialMediaLinks,
+                                                   String artistMusicStyleName){
+
+        ArtistUserProfile artistUserProfile = new ArtistUserProfile();
+        artistUserProfile.setArtistId(artist.getUserId());
+        artistUserProfile.setArtistName(artist.getArtistName());
+        artistUserProfile.setCountry(artistAsUser.getCountry());
+        artistUserProfile.setGender(artistAsUser.getGender());
+        artistUserProfile.setBio(artist.getBio());
+        artistUserProfile.setProfileUrl(ImageStorage.getArtistImage(artist.getUserId()));
+        artistUserProfile.setMusicalStyle(artist.getMusicalStyleId());
+        artistUserProfile.setSpotifyLink(artistSocialMediaLinks.getSpotifyLink());
+        artistUserProfile.setFacebookLink(artistSocialMediaLinks.getFacebookLink());
+        artistUserProfile.setTwitterLink(artistSocialMediaLinks.getTwitterLink());
+        artistUserProfile.setInstagramLink(artistSocialMediaLinks.getInstagramLink());
+        artistUserProfile.setYoutubeLink(artistSocialMediaLinks.getYoutubeLink());
+        artistUserProfile.setSnapchatLink(artistSocialMediaLinks.getSnapchatLink());
+        artistUserProfile.setMemberSince(artist.getArtistSince());
+        artistUserProfile.setMusicStyleName(artistMusicStyleName);
+
+        return artistUserProfile;
     }
 }

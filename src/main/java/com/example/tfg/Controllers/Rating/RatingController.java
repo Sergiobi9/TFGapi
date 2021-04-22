@@ -69,7 +69,7 @@ public class RatingController {
 
 
     @PutMapping("/post/{currentDate}")
-    public ResponseEntity getAssistedConcertsByUserId(@PathVariable String currentDate, @RequestBody RatingSimplified ratingSimplified) {
+    public ResponseEntity postRate(@PathVariable String currentDate, @RequestBody RatingSimplified ratingSimplified) {
         String ratingId = ratingSimplified.getId();
 
         Rating ratingRetrieved = ratingRepository.findRatingById(ratingId);

@@ -30,6 +30,7 @@ public class User {
 
     public User(){}
 
+
     public User(UserArtist userArtist) {
         this.firstName = userArtist.getName();
         this.country = userArtist.getCountry();

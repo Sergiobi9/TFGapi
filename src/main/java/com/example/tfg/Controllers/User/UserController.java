@@ -80,6 +80,10 @@ public class UserController {
 
     @PutMapping("/update")
     public ResponseEntity updateUser(@RequestBody User user) {
+        User currentUser = userRepository.findUserById(user.getId());
+        String password = currentUser.getPassword();
+        currentUser = user;
+        currentUser.setPassword(password);
         userRepository.save(user);
         return new ResponseEntity(user, HttpStatus.valueOf(200));
     }

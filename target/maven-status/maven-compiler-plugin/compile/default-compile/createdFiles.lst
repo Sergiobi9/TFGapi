@@ -43,6 +43,7 @@ com/example/tfg/Entities/Concert/ConcertReduced.class
 com/example/tfg/Entities/MusicStyle/MusicStyle.class
 com/example/tfg/Repositories/User/UserPreferencesRepository.class
 com/example/tfg/Security/CustomUserDetailsService.class
+com/example/tfg/Entities/Artist/ArtistUserProfile.class
 com/example/tfg/Controllers/Artist/ArtistController.class
 com/example/tfg/Repositories/ArtistSocialMediaLinks/ArtistSocialMediaLinksRepository.class
 com/example/tfg/Entities/ArtistSocialMediaLinks/ArtistSocialMediaLinks.class
