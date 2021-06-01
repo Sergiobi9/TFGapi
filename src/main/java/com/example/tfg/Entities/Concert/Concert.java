@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 
-        @Document(collection = "CONCERT")
+@Document(collection = "CONCERT")
 public class Concert {
 
     @Id
@@ -14,8 +14,6 @@ public class Concert {
     private String dateCreated;
     private String dateStarts;
     private String userId;
-    private double price;
-    private int numberAssistants;
     private String description;
     private String extraDescription;
     private boolean finished;
@@ -24,13 +22,11 @@ public class Concert {
 
     public Concert() {}
 
-    public Concert(String name, String dateCreated, String dateStarts, String userId, double price, int numberAssistants, String description, String extraDescription, boolean finished, int numberImages, ArrayList<String> artistsIds) {
+    public Concert(String name, String dateCreated, String dateStarts, String userId, String description, String extraDescription, boolean finished, int numberImages, ArrayList<String> artistsIds) {
         this.name = name;
         this.dateCreated = dateCreated;
         this.dateStarts = dateStarts;
         this.userId = userId;
-        this.price = price;
-        this.numberAssistants = numberAssistants;
         this.description = description;
         this.extraDescription = extraDescription;
         this.finished = finished;
@@ -52,14 +48,6 @@ public class Concert {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public String getUserId() {
@@ -84,14 +72,6 @@ public class Concert {
 
     public void setDateStarts(String dateStarts) {
         this.dateStarts = dateStarts;
-    }
-
-    public int getNumberAssistants() {
-        return numberAssistants;
-    }
-
-    public void setNumberAssistants(int numberAssistants) {
-        this.numberAssistants = numberAssistants;
     }
 
     public String getDescription() {

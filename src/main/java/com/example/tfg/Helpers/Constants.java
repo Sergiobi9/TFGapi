@@ -6,6 +6,7 @@ public class Constants {
     public static final int EARTH_RADIUS = 6371; // Radius of the earth
     public static final String USER_EXISTS = "USER ALREADY EXISTS", USER_NOT_EXIST = "USER NOT EXIST";
 
+    public static final String ARTIST_EXIST = "ARTIST ALREADY EXISTS", USER_IS_USER_ROLE = "USER IS NOT ARTIST";
     public static final String USER_BOOKING = "BOOKING", USER_RATING = "RATING";
 
 }

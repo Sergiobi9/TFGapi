@@ -14,9 +14,7 @@ public class ConcertReduced implements Comparable<ConcertReduced> {
     public double placeLongitude;
     public String placeName;
     public String placeAddress;
-    public double price;
     public String dateStarts;
-    public int numberAssistants;
     public String description;
     public String placeDescription;
     public String extraDescription;
@@ -26,16 +24,14 @@ public class ConcertReduced implements Comparable<ConcertReduced> {
 
     public ConcertReduced(){}
 
-    public ConcertReduced(String concertId, String name, double placeLatitude, double placeLongitude, String placeName, String placeAddress, double price, String dateStarts, int numberAssistants, String description, String placeDescription, String extraDescription, String concertCoverImage, ArrayList<String> imagesUrls, ArrayList<ArtistInfo> artists) {
+    public ConcertReduced(String concertId, String name, double placeLatitude, double placeLongitude, String placeName, String placeAddress, String dateStarts, String description, String placeDescription, String extraDescription, String concertCoverImage, ArrayList<String> imagesUrls, ArrayList<ArtistInfo> artists) {
         this.concertId = concertId;
         this.name = name;
         this.placeLatitude = placeLatitude;
         this.placeLongitude = placeLongitude;
         this.placeName = placeName;
         this.placeAddress = placeAddress;
-        this.price = price;
         this.dateStarts = dateStarts;
-        this.numberAssistants = numberAssistants;
         this.description = description;
         this.placeDescription = placeDescription;
         this.extraDescription = extraDescription;
@@ -92,28 +88,12 @@ public class ConcertReduced implements Comparable<ConcertReduced> {
         this.placeAddress = placeAddress;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public String getDateStarts() {
         return dateStarts;
     }
 
     public void setDateStarts(String dateStarts) {
         this.dateStarts = dateStarts;
-    }
-
-    public int getNumberAssistants() {
-        return numberAssistants;
-    }
-
-    public void setNumberAssistants(int numberAssistants) {
-        this.numberAssistants = numberAssistants;
     }
 
     public String getDescription() {

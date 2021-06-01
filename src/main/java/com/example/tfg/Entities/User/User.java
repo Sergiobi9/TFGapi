@@ -31,8 +31,22 @@ public class User {
     public User(){}
 
 
+    public User(String id, UserArtist userArtist) {
+        this.id = id;
+        this.firstName = userArtist.getFirstName();
+        this.lastName = userArtist.getLastName();
+        this.country = userArtist.getCountry();
+        this.city = userArtist.getCity();
+        this.zipCode = userArtist.getZipCode();
+        this.gender = userArtist.getGender();
+        this.birthday = userArtist.getBirthday();
+        this.email = userArtist.getEmail();
+        this.password = userArtist.getPassword();
+    }
+
     public User(UserArtist userArtist) {
-        this.firstName = userArtist.getName();
+        this.firstName = userArtist.getFirstName();
+        this.lastName = userArtist.getLastName();
         this.country = userArtist.getCountry();
         this.city = userArtist.getCity();
         this.zipCode = userArtist.getZipCode();

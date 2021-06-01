@@ -1,5 +1,7 @@
 package com.example.tfg.Entities.Concert;
 
+import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricing;
+
 import java.util.ArrayList;
 
 public class ConcertRegister {
@@ -13,12 +15,11 @@ public class ConcertRegister {
     public String dateCreated;
     public String dateStarts;
     private String userId;
-    public double price;
-    public int numberAssistants;
     public String description;
     public String extraDescription;
     public boolean finished;
     public int numberImages;
+    public ArrayList<ConcertIntervalPricing> concertIntervalPricing;
     public ArrayList<String> artistsIds;
 
     public ConcertRegister(){}
@@ -95,22 +96,6 @@ public class ConcertRegister {
         this.dateStarts = dateStarts;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getNumberAssistants() {
-        return numberAssistants;
-    }
-
-    public void setNumberAssistants(int numberAssistants) {
-        this.numberAssistants = numberAssistants;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -141,6 +126,14 @@ public class ConcertRegister {
 
     public void setNumberImages(int numberImages) {
         this.numberImages = numberImages;
+    }
+
+    public ArrayList<ConcertIntervalPricing> getConcertIntervalPricing() {
+        return concertIntervalPricing;
+    }
+
+    public void setConcertIntervalPricing(ArrayList<ConcertIntervalPricing> concertIntervalPricing) {
+        this.concertIntervalPricing = concertIntervalPricing;
     }
 
     public ArrayList<String> getArtistsIds() {

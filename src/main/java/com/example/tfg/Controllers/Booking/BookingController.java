@@ -48,7 +48,7 @@ public class BookingController {
             return new ResponseEntity(model, HttpStatus.valueOf(200));
         }
 
-        int numberAssistants = concert.getNumberAssistants();
+        int numberAssistants = 1000;
         int userBookings = booking.getBookings();
         int totalConcertBookings = bookingRepository.findAllByConcertId(concertId).size();
 
@@ -59,7 +59,7 @@ public class BookingController {
         }
 
         for (int i = 0; i < booking.getBookings(); i++){
-            Booking bookingToRegister = new Booking(booking.getUserId(), booking.getConcertId(), concert.getPrice(), booking.getDateBooked());
+            Booking bookingToRegister = new Booking(booking.getUserId(), booking.getConcertId(), 20, booking.getDateBooked());
             bookingRepository.insert(bookingToRegister);
         }
 

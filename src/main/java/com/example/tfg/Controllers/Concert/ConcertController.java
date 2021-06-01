@@ -5,6 +5,7 @@ import com.example.tfg.Entities.Artist.ArtistInfo;
 import com.example.tfg.Entities.Artist.ArtistSimplified;
 import com.example.tfg.Entities.Booking.Booking;
 import com.example.tfg.Entities.Concert.*;
+import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricing;
 import com.example.tfg.Entities.Rating.Rating;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Entities.User.UserPreferences;
@@ -16,6 +17,7 @@ import com.example.tfg.Repositories.Booking.BookingRepository;
 import com.example.tfg.Repositories.Concert.ConcertHistoryRepository;
 import com.example.tfg.Repositories.Concert.ConcertLocationRepository;
 import com.example.tfg.Repositories.Concert.ConcertRepository;
+import com.example.tfg.Repositories.Concert.Pricing.ConcertIntervalPricingRepository;
 import com.example.tfg.Repositories.Rating.RatingRepository;
 import com.example.tfg.Repositories.User.UserPreferencesRepository;
 import com.example.tfg.Repositories.User.UserRepository;
@@ -24,6 +26,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -60,6 +63,8 @@ public class ConcertController {
     @Autowired
     private RatingRepository ratingRepository;
 
+    @Autowired
+    private ConcertIntervalPricingRepository concertIntervalPricingRepository;
 
     @PostMapping("/create")
     public ResponseEntity createConcert(@RequestBody ConcertRegister concertRegister) {
@@ -68,8 +73,6 @@ public class ConcertController {
                 concertRegister.getDateCreated(),
                 concertRegister.getDateStarts(),
                 concertRegister.getUserId(),
-                concertRegister.getPrice(),
-                concertRegister.getNumberAssistants(),
                 concertRegister.getDescription(),
                 concertRegister.getExtraDescription(),
                 false,
@@ -87,6 +90,16 @@ public class ConcertController {
                 concertRegister.getPlaceDescription());
 
         concertLocationRepository.save(concertLocation);
+
+        ArrayList<ConcertIntervalPricing> concertIntervalPricings = concertRegister.getConcertIntervalPricing();
+
+        if (concertIntervalPricings != null){
+            for (ConcertIntervalPricing concertIntervalPricing : concertIntervalPricings){
+                concertIntervalPricing.setConcertId(concert.getId());
+                concertIntervalPricing.setDiscountApplied(0);
+                concertIntervalPricingRepository.save(concertIntervalPricing);
+            }
+        }
 
         ConcertHistory concertHistory = new ConcertHistory(concert.getId());
         concertHistoryRepository.save(concertHistory);
@@ -200,7 +213,7 @@ public class ConcertController {
                     ConcertHistory concertHistory = concertHistoryRepository.findConcertHistoryByConcertId(concertId);
                     if (concertHistory != null) {
                         int concertBookings = bookingRepository.findAllByConcertId(concert.getId()).size();
-                        int concertPlaces = concert.getNumberAssistants();
+                        int concertPlaces = 1000;
 
                         double concertPopularityRatio = getConcertPopularityRatio(concertBookings, concertPlaces);
                         if (isConcertPopular(concertPopularityRatio)) {
@@ -424,9 +437,7 @@ public class ConcertController {
                 concertLocation.getLongitude(),
                 concertLocation.getPlaceName(),
                 concertLocation.getAddress(),
-                currentConcert.getPrice(),
                 currentConcert.getDateStarts(),
-                currentConcert.getNumberAssistants(),
                 currentConcert.getDescription(),
                 concertLocation.getPlaceDescription(),
                 currentConcert.getExtraDescription(),
@@ -595,7 +606,7 @@ public class ConcertController {
 
     private int getConcertPlacesRemaining(Concert concert) {
         int concertBookings = bookingRepository.findAllByConcertId(concert.getId()).size();
-        int concertNumberAssistants = concert.getNumberAssistants();
+        int concertNumberAssistants = 1000;
 
         return concertNumberAssistants - concertBookings;
     }

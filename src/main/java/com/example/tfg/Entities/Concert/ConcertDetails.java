@@ -21,7 +21,6 @@ public class ConcertDetails {
         this.extraDescription = concert.getExtraDescription();
         this.concertDate = concert.getDateStarts();
         this.concertCover = ImageStorage.getConcertCoverImage(concertId);
-        this.price = concert.getPrice();
     }
 
     public String getConcertId() {
@@ -70,13 +69,5 @@ public class ConcertDetails {
 
     public void setConcertCover(String concertCover) {
         this.concertCover = concertCover;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 }

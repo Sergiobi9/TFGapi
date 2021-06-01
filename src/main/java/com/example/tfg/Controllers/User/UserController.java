@@ -12,6 +12,7 @@ import com.example.tfg.Repositories.ArtistSocialMediaLinks.ArtistSocialMediaLink
 import com.example.tfg.Repositories.Role.RoleRepository;
 import com.example.tfg.Repositories.User.UserPreferencesRepository;
 import com.example.tfg.Repositories.User.UserRepository;
+import com.example.tfg.Security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +47,9 @@ public class UserController {
     @Autowired
     private ArtistSocialMediaLinksRepository artistSocialMediaLinksRepository;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @PostMapping("/create")
     public ResponseEntity createUser(@RequestBody User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
@@ -61,21 +65,31 @@ public class UserController {
     @PostMapping("/create/artist")
     public ResponseEntity createUserAsArtist(@RequestBody UserArtist userArtist) {
 
-        User user = new User(userArtist);
+        User user = userRepository.findUserByEmail(userArtist.getEmail());
+
+        if (user == null) user = new User(userArtist);
+        else user = new User(user.getId(), userArtist);
+
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         Role userRole = roleRepository.findByRole(Constants.ARTIST_ROLE);
         user.setRoles(new HashSet<>(Collections.singletonList(userRole)));
         user.setUserRole(Constants.ARTIST_ROLE);
 
-        userRepository.insert(user);
+        userRepository.save(user);
 
         ArtistSocialMediaLinks artistSocialMediaLinks = new ArtistSocialMediaLinks(user.getId());
         artistSocialMediaLinksRepository.insert(artistSocialMediaLinks);
 
         Artist artist = new Artist(user.getId(), userArtist.getArtistName(), userArtist.getBio(), userArtist.getMusicalStyleId(), artistSocialMediaLinks.getId(), userArtist.getArtistSince());
-        artistRepository.insert(artist);
+        artistRepository.save(artist);
 
-        return new ResponseEntity(artist, HttpStatus.valueOf(200));
+        Map<Object, Object> model = new HashMap<>();
+        String token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
+        model.put("user", user);
+        model.put("artist", artist);
+        model.put("token", token);
+
+        return new ResponseEntity(model, HttpStatus.valueOf(200));
     }
 
     @PutMapping("/update")
@@ -103,6 +117,23 @@ public class UserController {
 
         if (existingUser != null) {
             model.put("info", Constants.USER_EXISTS);
+        } else {
+            model.put("info", Constants.USER_NOT_EXIST);
+        }
+        return new ResponseEntity(model, HttpStatus.valueOf(200));
+    }
+
+    @GetMapping("/artist/existing/{email}")
+    public ResponseEntity checkUserArtistAlreadyExists(@PathVariable String email) {
+        Map<Object, Object> model = new HashMap<>();
+        User existingUser = userRepository.findUserByEmail(email);
+
+        if (existingUser != null) {
+            if (existingUser.getUserRole().equals(Constants.ARTIST_ROLE)){
+                model.put("info", Constants.ARTIST_EXIST);
+            } else {
+                model.put("info", Constants.USER_IS_USER_ROLE);
+            }
         } else {
             model.put("info", Constants.USER_NOT_EXIST);
         }

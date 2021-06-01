@@ -2,6 +2,7 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Rating/RatingRepository.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Rating/RatingController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Booking/BookingTicketsList.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Artist/ArtistUserProfile.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/User/UserPreferencesRepository.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertLocation.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Helpers/Constants.java
