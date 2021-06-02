@@ -4,6 +4,7 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Booking/BookingTicketsList.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Artist/ArtistUserProfile.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/User/UserPreferencesRepository.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Concert/Pricing/ConcertIntervalPricingRepository.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertLocation.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Helpers/Constants.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ArtistProfileConcertInfo.java
@@ -12,12 +13,14 @@
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Role/RoleRepository.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Booking/Booking.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertRegister.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/Pricing/ConcertIntervalPricingDetails.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/User/User.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Artist/ArtistController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Repositories/Artist/ArtistRepository.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Rating/Rating.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/ConcertLocationReduced.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Booking/RegisterBooking.java
+/Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Entities/Concert/Pricing/ConcertIntervalPricing.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/Booking/BookingController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/MusicStyle/MusicStyleController.java
 /Users/sergiobi23/Documents/TFG/TFGapi/src/main/java/com/example/tfg/Controllers/User/UserPreferencesController.java

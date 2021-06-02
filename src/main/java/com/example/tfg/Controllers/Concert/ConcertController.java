@@ -6,6 +6,7 @@ import com.example.tfg.Entities.Artist.ArtistSimplified;
 import com.example.tfg.Entities.Booking.Booking;
 import com.example.tfg.Entities.Concert.*;
 import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricing;
+import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricingDetails;
 import com.example.tfg.Entities.Rating.Rating;
 import com.example.tfg.Entities.User.User;
 import com.example.tfg.Entities.User.UserPreferences;
@@ -21,6 +22,7 @@ import com.example.tfg.Repositories.Concert.Pricing.ConcertIntervalPricingReposi
 import com.example.tfg.Repositories.Rating.RatingRepository;
 import com.example.tfg.Repositories.User.UserPreferencesRepository;
 import com.example.tfg.Repositories.User.UserRepository;
+import org.joda.time.Interval;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -508,10 +510,24 @@ public class ConcertController {
 
         List<Booking> userConcertBookings = bookingRepository.findAllByUserIdAndConcertId(userId, concertId);
         ArrayList<String> userConcertBookingsIds = getUserBookingsIds(userConcertBookings);
-        int placesRemaining = getConcertPlacesRemaining(concert);
 
-        FullConcertDetails fullConcertDetails = getFullConcertDetails(concertDetails, concertLocationReduced, concertArtists, placesRemaining, userConcertBookingsIds, concertPhotosToReturn);
+        List<ConcertIntervalPricing> intervalPricings = concertIntervalPricingRepository.findConcertIntervalPricingByConcertId(concertId);
+
+        ArrayList<ConcertIntervalPricingDetails> concertIntervalPricings = new ArrayList<>();
+        for (ConcertIntervalPricing concertIntervalPricing : intervalPricings){
+            int placesRemaining = getConcertPlacesRemaining(concertId, concertIntervalPricing);
+            int userBookings = getUserBookings(concertId, concertIntervalPricing, userId);
+            ConcertIntervalPricingDetails concertIntervalPricingDetails = new ConcertIntervalPricingDetails(concertIntervalPricing, placesRemaining, userBookings);
+            concertIntervalPricings.add(concertIntervalPricingDetails);
+        }
+
+        FullConcertDetails fullConcertDetails = getFullConcertDetails(concertDetails, concertLocationReduced, concertArtists, userConcertBookingsIds, concertIntervalPricings, concertPhotosToReturn);
         return new ResponseEntity(fullConcertDetails, HttpStatus.valueOf(200));
+    }
+
+    private int getUserBookings(String concertId, ConcertIntervalPricing concertIntervalPricing, String userId) {
+        int concertBookings = bookingRepository.findAllByConcertIdAndBookingTypeIdAndUserId(concertId, concertIntervalPricing.getId(), userId).size();
+        return concertBookings;
     }
 
     @GetMapping("/all/activity/{artistId}")
@@ -595,8 +611,8 @@ public class ConcertController {
         return new ConcertLocationReduced(concertLocation);
     }
 
-    private FullConcertDetails getFullConcertDetails(ConcertDetails concertDetails, ConcertLocationReduced concertLocationReduced, ArrayList<ArtistSimplified> concertArtists, int placesRemaining, ArrayList<String> userBookings, ArrayList<String> concertPhotosToReturn) {
-        return new FullConcertDetails(concertDetails, concertLocationReduced, concertArtists, placesRemaining, userBookings, concertPhotosToReturn);
+    private FullConcertDetails getFullConcertDetails(ConcertDetails concertDetails, ConcertLocationReduced concertLocationReduced, ArrayList<ArtistSimplified> concertArtists, ArrayList<String> userBookings, ArrayList<ConcertIntervalPricingDetails> concertTickets, ArrayList<String> concertPhotosToReturn) {
+        return new FullConcertDetails(concertDetails, concertLocationReduced, concertArtists, userBookings, concertTickets, concertPhotosToReturn);
     }
 
     private ArtistSimplified getArtistsInfoSimplified(Artist artist) {
@@ -604,9 +620,9 @@ public class ConcertController {
         return artistSimplified;
     }
 
-    private int getConcertPlacesRemaining(Concert concert) {
-        int concertBookings = bookingRepository.findAllByConcertId(concert.getId()).size();
-        int concertNumberAssistants = 1000;
+    private int getConcertPlacesRemaining(String concertId, ConcertIntervalPricing intervalPricing) {
+        int concertBookings = bookingRepository.findAllByConcertIdAndBookingTypeId(concertId, intervalPricing.getId()).size();
+        int concertNumberAssistants = intervalPricing.getNumberTickets();
 
         return concertNumberAssistants - concertBookings;
     }

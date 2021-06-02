@@ -6,12 +6,16 @@ import com.example.tfg.Entities.Booking.RegisterBooking;
 import com.example.tfg.Entities.Concert.Concert;
 import com.example.tfg.Entities.Concert.ConcertHistory;
 import com.example.tfg.Entities.Concert.ConcertLocation;
+import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricing;
+import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricingDetails;
+import com.example.tfg.Helpers.Constants;
 import com.example.tfg.Helpers.DateUtils;
 import com.example.tfg.Helpers.ResponseInfo;
 import com.example.tfg.Repositories.Booking.BookingRepository;
 import com.example.tfg.Repositories.Concert.ConcertHistoryRepository;
 import com.example.tfg.Repositories.Concert.ConcertLocationRepository;
 import com.example.tfg.Repositories.Concert.ConcertRepository;
+import com.example.tfg.Repositories.Concert.Pricing.ConcertIntervalPricingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +40,9 @@ public class BookingController {
     @Autowired
     private ConcertHistoryRepository concertHistoryRepository;
 
+    @Autowired
+    private ConcertIntervalPricingRepository concertIntervalPricingRepository;
+
     @PostMapping("/create")
     public ResponseEntity registerBooking(@RequestBody RegisterBooking booking) {
         Map<Object, Object> model = new HashMap<>();
@@ -48,19 +55,26 @@ public class BookingController {
             return new ResponseEntity(model, HttpStatus.valueOf(200));
         }
 
-        int numberAssistants = 1000;
-        int userBookings = booking.getBookings();
-        int totalConcertBookings = bookingRepository.findAllByConcertId(concertId).size();
+        boolean foundLimitExceed = false;
+        for (int i = 0; i < booking.getBookings().size(); i++){
+            int bookings = booking.getBookings().get(i).getTicketsBought();
+            String bookingTypeId = booking.getBookings().get(i).getId();
 
-        int concertBookingsUpdated = totalConcertBookings + userBookings;
-        if (concertBookingsUpdated > numberAssistants){
-            model.put(ResponseInfo.INFO, ResponseInfo.BOOKING_EXCEEDED);
-            return new ResponseEntity(model, HttpStatus.valueOf(200));
-        }
+            ConcertIntervalPricing concertIntervalPricing = concertIntervalPricingRepository.findConcertIntervalPricingById(booking.getBookings().get(i).getId());
 
-        for (int i = 0; i < booking.getBookings(); i++){
-            Booking bookingToRegister = new Booking(booking.getUserId(), booking.getConcertId(), 20, booking.getDateBooked());
-            bookingRepository.insert(bookingToRegister);
+            for (int j = 0; j < bookings; j++){
+                int numberTickets = concertIntervalPricing.getNumberTickets();
+                int totalConcertBookings = bookingRepository.findAllByConcertIdAndBookingTypeId(booking.getConcertId(), bookingTypeId).size();
+
+                int concertBookingsUpdated = totalConcertBookings + bookings;
+                if (concertBookingsUpdated > numberTickets){
+                    foundLimitExceed = true;
+                } else{
+                    double cost = booking.getBookings().get(i).getCost();
+                    Booking bookingToRegister = new Booking(booking.getUserId(), bookingTypeId, booking.getConcertId(), cost, booking.getDateBooked());
+                    bookingRepository.insert(bookingToRegister);
+                }
+            }
         }
 
         ConcertHistory concertHistory = concertHistoryRepository.findConcertHistoryByConcertId(concertId);
@@ -78,7 +92,11 @@ public class BookingController {
             concertHistoryRepository.save(concertHistory);
         }
 
-        model.put(ResponseInfo.INFO, ResponseInfo.BOOKING_SUCCEEDED);
+        if (foundLimitExceed){
+            model.put(ResponseInfo.INFO, ResponseInfo.BOOKING_EXCEEDED);
+        } else {
+            model.put(ResponseInfo.INFO, ResponseInfo.BOOKING_SUCCEEDED);
+        }
         return new ResponseEntity(model, HttpStatus.valueOf(200));
     }
 

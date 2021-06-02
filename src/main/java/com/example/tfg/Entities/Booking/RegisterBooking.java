@@ -1,12 +1,15 @@
 package com.example.tfg.Entities.Booking;
 
+import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricingDetails;
+
 import java.lang.ref.PhantomReference;
+import java.util.ArrayList;
 
 public class RegisterBooking {
 
     private String userId;
     private String concertId;
-    private int bookings;
+    private ArrayList<ConcertIntervalPricingDetails> bookings;
     private String dateBooked;
 
     public RegisterBooking() { }
@@ -27,11 +30,11 @@ public class RegisterBooking {
         this.concertId = concertId;
     }
 
-    public int getBookings() {
+    public ArrayList<ConcertIntervalPricingDetails> getBookings() {
         return bookings;
     }
 
-    public void setBookings(int bookings) {
+    public void setBookings(ArrayList<ConcertIntervalPricingDetails> bookings) {
         this.bookings = bookings;
     }
 

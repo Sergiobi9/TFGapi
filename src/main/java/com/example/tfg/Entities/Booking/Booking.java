@@ -9,12 +9,23 @@ public class Booking {
     @Id
     public String id;
     public String userId;
+    public String bookingTypeId;
     public String concertId;
     public double price;
     public String dateBooked;
 
-    public Booking(String userId, String concertId, double price, String dateBooked) {
+    public Booking(String id, String userId, String bookingTypeId, String concertId, double price, String dateBooked) {
+        this.id = id;
         this.userId = userId;
+        this.bookingTypeId = bookingTypeId;
+        this.concertId = concertId;
+        this.price = price;
+        this.dateBooked = dateBooked;
+    }
+
+    public Booking(String userId, String bookingTypeId, String concertId, double price, String dateBooked) {
+        this.userId = userId;
+        this.bookingTypeId = bookingTypeId;
         this.concertId = concertId;
         this.price = price;
         this.dateBooked = dateBooked;
@@ -44,6 +55,14 @@ public class Booking {
 
     public void setConcertId(String concertId) {
         this.concertId = concertId;
+    }
+
+    public String getBookingTypeId() {
+        return bookingTypeId;
+    }
+
+    public void setBookingTypeId(String bookingTypeId) {
+        this.bookingTypeId = bookingTypeId;
     }
 
     public double getPrice() {

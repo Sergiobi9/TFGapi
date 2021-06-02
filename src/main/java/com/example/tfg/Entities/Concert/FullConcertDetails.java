@@ -1,6 +1,8 @@
 package com.example.tfg.Entities.Concert;
 
 import com.example.tfg.Entities.Artist.ArtistSimplified;
+import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricing;
+import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricingDetails;
 
 import java.util.ArrayList;
 
@@ -9,7 +11,7 @@ public class FullConcertDetails {
     private ConcertDetails concertDetails;
     private ConcertLocationReduced concertLocation;
     private ArrayList<ArtistSimplified> concertArtists;
-    private int placesRemaining;
+    private ArrayList<ConcertIntervalPricingDetails> concertTickets;
     private ArrayList<String> bookingsIds;
     private ArrayList<String> imagesUrls;
 
@@ -18,15 +20,15 @@ public class FullConcertDetails {
     public FullConcertDetails(ConcertDetails concertDetails,
                               ConcertLocationReduced concertLocationReduced,
                               ArrayList<ArtistSimplified> concertArtists,
-                              int placesRemaining,
                               ArrayList<String> bookingsIds,
+                              ArrayList<ConcertIntervalPricingDetails> concertTickets,
                               ArrayList<String> imagesUrls){
 
         this.concertDetails = concertDetails;
         this.concertLocation = concertLocationReduced;
         this.concertArtists = concertArtists;
-        this.placesRemaining = placesRemaining;
         this.bookingsIds = bookingsIds;
+        this.concertTickets = concertTickets;
         this.imagesUrls = imagesUrls;
 
     }
@@ -55,20 +57,20 @@ public class FullConcertDetails {
         this.concertArtists = concertArtists;
     }
 
-    public int getPlacesRemaining() {
-        return placesRemaining;
-    }
-
-    public void setPlacesRemaining(int placesRemaining) {
-        this.placesRemaining = placesRemaining;
-    }
-
     public ArrayList<String> getBookingsIds() {
         return bookingsIds;
     }
 
     public void setBookingsIds(ArrayList<String> bookingsIds) {
         this.bookingsIds = bookingsIds;
+    }
+
+    public ArrayList<ConcertIntervalPricingDetails> getConcertTickets() {
+        return concertTickets;
+    }
+
+    public void setConcertTickets(ArrayList<ConcertIntervalPricingDetails> concertTickets) {
+        this.concertTickets = concertTickets;
     }
 
     public ArrayList<String> getImagesUrls() {

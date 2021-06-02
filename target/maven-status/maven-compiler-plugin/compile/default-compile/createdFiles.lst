@@ -1,4 +1,5 @@
 com/example/tfg/Entities/Artist/ArtistSimplified.class
+com/example/tfg/Repositories/Concert/Pricing/ConcertIntervalPricingRepository.class
 com/example/tfg/Entities/User/UserArtist.class
 com/example/tfg/Repositories/Role/RoleRepository.class
 com/example/tfg/Entities/Artist/ArtistInfo.class
@@ -35,6 +36,7 @@ com/example/tfg/Entities/Concert/ArtistProfileConcertInfo.class
 com/example/tfg/Security/WebSecurityConfiguration.class
 com/example/tfg/Entities/Role/Role.class
 com/example/tfg/Repositories/Concert/ConcertLocationRepository.class
+com/example/tfg/Entities/Concert/Pricing/ConcertIntervalPricingDetails.class
 com/example/tfg/Helpers/Constants.class
 com/example/tfg/Entities/Concert/FullConcertDetails.class
 com/example/tfg/Entities/Concert/ConcertHistory.class
@@ -44,6 +46,7 @@ com/example/tfg/Entities/MusicStyle/MusicStyle.class
 com/example/tfg/Repositories/User/UserPreferencesRepository.class
 com/example/tfg/Security/CustomUserDetailsService.class
 com/example/tfg/Entities/Artist/ArtistUserProfile.class
+com/example/tfg/Entities/Concert/Pricing/ConcertIntervalPricing.class
 com/example/tfg/Controllers/Artist/ArtistController.class
 com/example/tfg/Repositories/ArtistSocialMediaLinks/ArtistSocialMediaLinksRepository.class
 com/example/tfg/Entities/ArtistSocialMediaLinks/ArtistSocialMediaLinks.class
