@@ -26,6 +26,23 @@ public class DateUtils {
         return currentToDate.before(concertToDate);
     }
 
+    public static boolean dateIsBetween(String concertDate, String startDate, String endDate){
+
+        Date startDateToDate;
+        Date endDateToDate;
+        Date concertToDate;
+        try {
+            startDateToDate = timePattern.parse(startDate);
+            endDateToDate = timePattern.parse(endDate);
+            concertToDate = timePattern.parse(concertDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        return startDateToDate.before(concertToDate) && endDateToDate.before(concertToDate);
+    }
+
     public static boolean currentDateIsAfter(String concertDate, String currentDate){
 
         Date currentToDate;

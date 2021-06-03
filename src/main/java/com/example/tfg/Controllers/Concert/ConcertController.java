@@ -403,8 +403,8 @@ public class ConcertController {
         return new ResponseEntity(nearConcerts, HttpStatus.valueOf(200));
     }
 
-    @GetMapping("/all/{currentDate}")
-    public ResponseEntity getAllConcertsActiveByCurrentDate(@PathVariable String currentDate) {
+    @GetMapping("/all/startDate/{startDate}/endDate/{endDate}")
+    public ResponseEntity getAllConcertsActiveByCurrentDate(@PathVariable String startDate, @PathVariable String endDate) {
 
         ArrayList<ConcertReduced> concertsToReturn = new ArrayList<>();
         List<Concert> concerts = concertRepository.findAll();
@@ -412,7 +412,7 @@ public class ConcertController {
         for (int i = 0; i < concerts.size(); i++) {
             String concertDate = concerts.get(i).getDateStarts();
 
-            if (DateUtils.currentDateIsBefore(concertDate, currentDate)) {
+            if (DateUtils.dateIsBetween(concertDate, startDate, endDate)) {
                 Concert concert = concerts.get(i);
                 ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
 
