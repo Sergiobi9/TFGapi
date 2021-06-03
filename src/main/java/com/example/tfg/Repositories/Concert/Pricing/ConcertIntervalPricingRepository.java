@@ -12,4 +12,5 @@ public interface ConcertIntervalPricingRepository extends MongoRepository<Concer
 
     ConcertIntervalPricing findConcertIntervalPricingById(String concertIntervalPricingId);
     List<ConcertIntervalPricing> findConcertIntervalPricingByConcertId(String concertId);
+
 }

@@ -425,6 +425,29 @@ public class ConcertController {
         return new ResponseEntity(concertsToReturn, HttpStatus.valueOf(200));
     }
 
+    @DeleteMapping("/delete/concertId/{concertId}")
+    public ResponseEntity DeleteConcertByConcertId(@PathVariable String concertId) {
+
+        Concert concert = concertRepository.findConcertById(concertId);
+        ConcertHistory concertHistory = concertHistoryRepository.findConcertHistoryByConcertId(concertId);
+        List<Booking> bookings = bookingRepository.findAllByConcertId(concertId);
+        List<ConcertIntervalPricing> concertIntervalPricings = concertIntervalPricingRepository.findConcertIntervalPricingByConcertId(concertId);
+
+
+        concertRepository.delete(concert);
+        concertHistoryRepository.delete(concertHistory);
+
+        for (Booking booking : bookings){
+            bookingRepository.delete(booking);
+        }
+
+        for (ConcertIntervalPricing intervalPricing : concertIntervalPricings){
+            concertIntervalPricingRepository.delete(intervalPricing);
+        }
+
+        return new ResponseEntity(HttpStatus.valueOf(200));
+    }
+
     private ConcertReduced createConcertReduced(Concert currentConcert, ConcertLocation concertLocation) {
         ArrayList<String> concertImages = getConcertPlacesImages(currentConcert.getId(), currentConcert.getNumberImages());
         String concertCoverImage = ImageStorage.getConcertCoverImage(currentConcert.getId());
