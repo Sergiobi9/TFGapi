@@ -40,7 +40,8 @@ public class DateUtils {
             return false;
         }
 
-        return startDateToDate.before(concertToDate) && endDateToDate.before(concertToDate);
+        boolean response = concertToDate.after(startDateToDate) && concertToDate.before(endDateToDate);
+        return response;
     }
 
     public static boolean currentDateIsAfter(String concertDate, String currentDate){

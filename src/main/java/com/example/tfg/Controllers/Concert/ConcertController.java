@@ -185,6 +185,8 @@ public class ConcertController {
             }
         }
 
+        Collections.sort(concertSuggestions);
+
         return new ResponseEntity(concertSuggestions, HttpStatus.valueOf(200));
     }
 
@@ -231,6 +233,8 @@ public class ConcertController {
             }
         }
 
+        Collections.sort(popularConcerts);
+
         return new ResponseEntity(popularConcerts, HttpStatus.valueOf(200));
     }
 
@@ -271,6 +275,8 @@ public class ConcertController {
                 artistConcerts.add(concertReduced);
             }
         }
+
+        Collections.sort(artistConcerts);
 
         return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
     }
@@ -313,6 +319,8 @@ public class ConcertController {
             }
         }
 
+        Collections.sort(artistConcerts);
+
         return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
     }
 
@@ -335,7 +343,6 @@ public class ConcertController {
         }
 
         Collections.sort(artistConcerts);
-        Collections.reverse(artistConcerts);
 
         ConcertReduced nextConcert = new ConcertReduced();
         if (!artistConcerts.isEmpty()){ nextConcert = artistConcerts.get(0); }
@@ -362,6 +369,9 @@ public class ConcertController {
                 artistConcerts.add(concertReduced);
             }
         }
+
+        Collections.sort(artistConcerts);
+
 
         return new ResponseEntity(artistConcerts, HttpStatus.valueOf(200));
     }
@@ -403,8 +413,8 @@ public class ConcertController {
         return new ResponseEntity(nearConcerts, HttpStatus.valueOf(200));
     }
 
-    @GetMapping("/all/startDate/{startDate}/endDate/{endDate}")
-    public ResponseEntity getAllConcertsActiveByCurrentDate(@PathVariable String startDate, @PathVariable String endDate) {
+    @GetMapping("/all/currentDate/{currentDate}/startDate/{startDate}/endDate/{endDate}")
+    public ResponseEntity getAllConcertsActiveByCurrentDate(@PathVariable String startDate, @PathVariable String endDate, @PathVariable String currentDate) {
 
         ArrayList<ConcertReduced> concertsToReturn = new ArrayList<>();
         List<Concert> concerts = concertRepository.findAll();
@@ -412,7 +422,7 @@ public class ConcertController {
         for (int i = 0; i < concerts.size(); i++) {
             String concertDate = concerts.get(i).getDateStarts();
 
-            if (DateUtils.dateIsBetween(concertDate, startDate, endDate)) {
+            if (DateUtils.dateIsBetween(concertDate, startDate, endDate) && DateUtils.currentDateIsBefore(concertDate, currentDate)) {
                 Concert concert = concerts.get(i);
                 ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
 
@@ -421,6 +431,8 @@ public class ConcertController {
                 concertsToReturn.add(concertReduced);
             }
         }
+
+        Collections.sort(concertsToReturn);
 
         return new ResponseEntity(concertsToReturn, HttpStatus.valueOf(200));
     }
