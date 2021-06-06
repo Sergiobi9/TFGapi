@@ -116,6 +116,7 @@ public class ArtistController {
             artistsToReturn.add(artistUserRegisterSelection);
         }
 
+
         return new ResponseEntity(artistsToReturn, HttpStatus.valueOf(200));
     }
 

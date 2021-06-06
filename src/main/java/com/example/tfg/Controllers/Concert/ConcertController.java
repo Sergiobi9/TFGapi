@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.stream.Location;
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -406,9 +407,12 @@ public class ConcertController {
 
             if (distance.intValue() <= radius) {
                 ConcertReduced concertReduced = createConcertReduced(currentConcert, concertLocation);
+                concertReduced.setDistance(distance.intValue());
                 nearConcerts.add(concertReduced);
             }
         }
+
+        Collections.sort(nearConcerts);
 
         return new ResponseEntity(nearConcerts, HttpStatus.valueOf(200));
     }

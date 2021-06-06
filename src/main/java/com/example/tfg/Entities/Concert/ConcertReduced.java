@@ -21,6 +21,7 @@ public class ConcertReduced implements Comparable<ConcertReduced> {
     public String concertCoverImage;
     public ArrayList<String> imagesUrls;
     public ArrayList<ArtistInfo> artists;
+    private int distance;
 
     public ConcertReduced(){}
 
@@ -38,6 +39,23 @@ public class ConcertReduced implements Comparable<ConcertReduced> {
         this.concertCoverImage = concertCoverImage;
         this.imagesUrls = imagesUrls;
         this.artists = artists;
+    }
+
+    public ConcertReduced(String concertId, String name, double placeLatitude, double placeLongitude, String placeName, String placeAddress, String dateStarts, String description, String placeDescription, String extraDescription, String concertCoverImage, ArrayList<String> imagesUrls, ArrayList<ArtistInfo> artists, int distance) {
+        this.concertId = concertId;
+        this.name = name;
+        this.placeLatitude = placeLatitude;
+        this.placeLongitude = placeLongitude;
+        this.placeName = placeName;
+        this.placeAddress = placeAddress;
+        this.dateStarts = dateStarts;
+        this.description = description;
+        this.placeDescription = placeDescription;
+        this.extraDescription = extraDescription;
+        this.concertCoverImage = concertCoverImage;
+        this.imagesUrls = imagesUrls;
+        this.artists = artists;
+        this.distance = distance;
     }
 
     public String getConcertId() {
@@ -144,14 +162,28 @@ public class ConcertReduced implements Comparable<ConcertReduced> {
         this.artists = artists;
     }
 
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
     @Override
     public int compareTo(ConcertReduced concertReduced) {
-        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
-        try {
-            return sdf.parse(getDateStarts()).compareTo(sdf.parse(concertReduced.getDateStarts()));
-        } catch (ParseException ex) {
-            ex.printStackTrace();
+        if (getDistance() < concertReduced.getDistance()){
+            return -1;
+        } else if(getDistance() >concertReduced.getDistance()){
+            return 1;
+        } else {
+            SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
+            try {
+                return sdf.parse(getDateStarts()).compareTo(sdf.parse(concertReduced.getDateStarts()));
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+            return -1;
         }
-        return -1;
-    }
+        }
 }
