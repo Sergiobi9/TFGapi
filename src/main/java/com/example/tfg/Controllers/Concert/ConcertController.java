@@ -4,6 +4,7 @@ import com.example.tfg.Entities.Artist.Artist;
 import com.example.tfg.Entities.Artist.ArtistInfo;
 import com.example.tfg.Entities.Artist.ArtistSimplified;
 import com.example.tfg.Entities.Booking.Booking;
+import com.example.tfg.Entities.Booking.BookingTicketsList;
 import com.example.tfg.Entities.Concert.*;
 import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricing;
 import com.example.tfg.Entities.Concert.Pricing.ConcertIntervalPricingDetails;
@@ -218,7 +219,9 @@ public class ConcertController {
                     ConcertHistory concertHistory = concertHistoryRepository.findConcertHistoryByConcertId(concertId);
                     if (concertHistory != null) {
                         int concertBookings = bookingRepository.findAllByConcertId(concert.getId()).size();
-                        int concertPlaces = 1000;
+
+                        List<ConcertIntervalPricing> concertIntervalPricings = concertIntervalPricingRepository.findConcertIntervalPricingByConcertId(concertId);
+                        int concertPlaces = getConcertPlaces(concertIntervalPricings);
 
                         double concertPopularityRatio = getConcertPopularityRatio(concertBookings, concertPlaces);
                         if (isConcertPopular(concertPopularityRatio)) {
@@ -234,9 +237,52 @@ public class ConcertController {
             }
         }
 
+        if (popularConcerts.isEmpty()){
+            for (int i = 0; i < concerts.size(); i++) {
+                Concert concert = concerts.get(i);
+                String concertId = concert.getId();
+
+                String concertDate = concert.getDateStarts();
+                if (DateUtils.currentDateIsBefore(concertDate, currentDate)) {
+
+                    /* Add only non booked concerts */
+                    if (!concertBookedIdsController.contains(concertId)) {
+
+                        ConcertHistory concertHistory = concertHistoryRepository.findConcertHistoryByConcertId(concertId);
+                        if (concertHistory != null) {
+                            List<ConcertIntervalPricing> concertIntervalPricings = concertIntervalPricingRepository.findConcertIntervalPricingByConcertId(concertId);
+                            int concertPlaces = getConcertPlaces(concertIntervalPricings);
+
+                            if (isConcertBig(concertPlaces)) {
+                                if (!concertIdsController.contains(concertId)) {
+                                    ConcertLocation concertLocation = concertLocationRepository.findByConcertId(concert.getId());
+                                    ConcertReduced concertReduced = createConcertReduced(concert, concertLocation);
+                                    popularConcerts.add(concertReduced);
+                                    concertIdsController.add(concertId);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         Collections.sort(popularConcerts);
 
         return new ResponseEntity(popularConcerts, HttpStatus.valueOf(200));
+    }
+
+    private boolean isConcertBig(int concertPlaces) {
+        return concertPlaces > 50000;
+    }
+
+    private int getConcertPlaces(List<ConcertIntervalPricing> concertIntervalPricings) {
+        int places = 0;
+        for (int i = 0; i < concertIntervalPricings.size(); i++){
+            places = places + concertIntervalPricings.get(i).getNumberTickets();
+        }
+
+        return places;
     }
 
     private boolean isConcertPopular(double concertPopularityRatio) {
@@ -378,10 +424,13 @@ public class ConcertController {
     }
 
     /* Radius in km */
-    @GetMapping("/map/{userLatitude}/{userLongitude}/{radius}")
+    @GetMapping("/map/latitude/{userLatitude}/longitude/{userLongitude}/radius/{radius}/currentDate/{currentDate}/startDate/{startDate}/endDate/{endDate}")
     public ResponseEntity getConcertsNearUser(@PathVariable double userLatitude,
                                               @PathVariable double userLongitude,
-                                              @PathVariable double radius) {
+                                              @PathVariable double radius,
+                                              @PathVariable String currentDate,
+                                              @PathVariable String startDate,
+                                              @PathVariable String endDate) {
 
         ArrayList<ConcertReduced> nearConcerts = new ArrayList<>();
         List<Concert> concerts = concertRepository.findAll();
@@ -389,28 +438,33 @@ public class ConcertController {
         for (int i = 0; i < concerts.size(); i++) {
 
             Concert currentConcert = concerts.get(i);
+            String concertDate = currentConcert.getDateStarts();
             ConcertLocation concertLocation = concertLocationRepository.findByConcertId(currentConcert.getId());
 
-            double concertLatitude = concertLocation.getLatitude();
-            double concertLongitude = concertLocation.getLongitude();
-            double latitudeDistance = Math.toRadians(userLatitude - concertLatitude);
-            double longitudeDistance = Math.toRadians(userLongitude - concertLongitude);
-            double a = Math.sin(latitudeDistance / 2) * Math.sin(latitudeDistance / 2)
-                    + Math.cos(Math.toRadians(concertLatitude)) * Math.cos(Math.toRadians(userLatitude))
-                    * Math.sin(longitudeDistance / 2) * Math.sin(longitudeDistance / 2);
+            if (DateUtils.dateIsBetween(concertDate, startDate, endDate) && DateUtils.currentDateIsBefore(concertDate, currentDate)) {
+                double concertLatitude = concertLocation.getLatitude();
+                double concertLongitude = concertLocation.getLongitude();
+                double latitudeDistance = Math.toRadians(userLatitude - concertLatitude);
+                double longitudeDistance = Math.toRadians(userLongitude - concertLongitude);
+                double a = Math.sin(latitudeDistance / 2) * Math.sin(latitudeDistance / 2)
+                        + Math.cos(Math.toRadians(concertLatitude)) * Math.cos(Math.toRadians(userLatitude))
+                        * Math.sin(longitudeDistance / 2) * Math.sin(longitudeDistance / 2);
 
-            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            Double distance = Constants.EARTH_RADIUS * c;
+                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                Double distance = Constants.EARTH_RADIUS * c;
 
-            distance = Math.pow(distance, 2);
-            distance = Math.sqrt(distance);
+                distance = Math.pow(distance, 2);
+                distance = Math.sqrt(distance);
 
-            if (distance.intValue() <= radius) {
-                ConcertReduced concertReduced = createConcertReduced(currentConcert, concertLocation);
-                concertReduced.setDistance(distance.intValue());
-                nearConcerts.add(concertReduced);
+                if (distance.intValue() <= radius) {
+                    ConcertReduced concertReduced = createConcertReduced(currentConcert, concertLocation);
+                    concertReduced.setDistance(distance.intValue());
+                    nearConcerts.add(concertReduced);
+                }
             }
         }
+
+
 
         Collections.sort(nearConcerts);
 
